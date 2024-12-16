@@ -16,22 +16,8 @@
       "auth": {
         "tododemoa7cf11d8": {}
       },
-      "function": {
-        "itemsLambda": {
-          "deploymentBucketName": "amplify-tododemo-dev-0ab6c-deployment",
-          "s3Key": "amplify-builds/itemsLambda-373478514c7334463871-build.zip"
-        },
-        "itemsLambdaV2": {
-          "deploymentBucketName": "amplify-tododemo-dev-0ab6c-deployment",
-          "s3Key": "amplify-builds/itemsLambdaV2-6b35716c49535053666d-build.zip"
-        }
-      },
       "api": {
-        "itemsApi": {},
         "tododemo": {}
-      },
-      "storage": {
-        "itemsTable": {}
       }
     }
   }
