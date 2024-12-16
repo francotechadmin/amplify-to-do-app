@@ -1,4 +1,20 @@
 {
+  "api": {
+    "itemsApi": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "itemsLambdaV2"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
   "auth": {
     "tododemoa7cf11d8": {
       "customAuth": false,
@@ -23,6 +39,72 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
+    }
+  },
+  "function": {
+    "itemsLambda": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "itemsLambdaV2": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "itemsTable"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_itemsLambdaV2_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "itemsLambdaV2"
+        }
+      ]
+    },
+    "AMPLIFY_function_itemsLambdaV2_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "itemsLambdaV2"
+        }
+      ]
+    },
+    "AMPLIFY_function_itemsLambda_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "itemsLambda"
+        }
+      ]
+    },
+    "AMPLIFY_function_itemsLambda_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "itemsLambda"
+        }
+      ]
+    }
+  },
+  "storage": {
+    "itemsTable": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
     }
   }
 }

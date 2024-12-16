@@ -9,11 +9,28 @@
       "UnauthRoleName": "amplify-tododemo-dev-0ab6c-unauthRole",
       "StackName": "amplify-tododemo-dev-0ab6c",
       "StackId": "arn:aws:cloudformation:us-east-2:905418088317:stack/amplify-tododemo-dev-0ab6c/1eb0db10-ba58-11ef-b681-066330046925",
-      "AmplifyAppId": "ds5im9z8tc6j1"
+      "AmplifyAppId": "ds5im9z8tc6j1",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-tododemo-dev-0ab6c-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
         "tododemoa7cf11d8": {}
+      },
+      "function": {
+        "itemsLambda": {
+          "deploymentBucketName": "amplify-tododemo-dev-0ab6c-deployment",
+          "s3Key": "amplify-builds/itemsLambda-373478514c7334463871-build.zip"
+        },
+        "itemsLambdaV2": {
+          "deploymentBucketName": "amplify-tododemo-dev-0ab6c-deployment",
+          "s3Key": "amplify-builds/itemsLambdaV2-4a63562b596e4b744131-build.zip"
+        }
+      },
+      "api": {
+        "itemsApi": {}
+      },
+      "storage": {
+        "itemsTable": {}
       }
     }
   }

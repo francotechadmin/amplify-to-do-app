@@ -1,0 +1,14 @@
+{
+  "resourceName": "itemsTable",
+  "tableName": "itemsTable",
+  "partitionKey": {
+    "fieldName": "UserId",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "TaskId",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}
