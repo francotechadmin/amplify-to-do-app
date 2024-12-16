@@ -27,7 +27,8 @@
         }
       },
       "api": {
-        "itemsApi": {}
+        "itemsApi": {},
+        "tododemo": {}
       },
       "storage": {
         "itemsTable": {}

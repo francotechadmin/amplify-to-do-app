@@ -1,0 +1,14 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY {
+  globalAuthRule: AuthRule = { allow: public }
+} # FOR TESTING ONLY!
+type Todo @model @auth(rules: [{ allow: owner, ownerField: "author" }]) {
+  id: ID! @auth(rules: [{ allow: owner }]) # Unique identifier for the task
+  author: String! @auth(rules: [{ allow: owner }]) # The user who created the task
+  content: String! @auth(rules: [{ allow: owner }]) # The content of the task
+  isCompleted: Boolean! @auth(rules: [{ allow: owner }]) # Completion status of the task
+  createdAt: AWSDateTime! @auth(rules: [{ allow: owner }]) # Timestamp when the task was created
+  updatedAt: AWSDateTime! @auth(rules: [{ allow: owner }]) # Timestamp when the task was last updated
+  owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }]) # The user who owns the task
+}
