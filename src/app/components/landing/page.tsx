@@ -99,6 +99,7 @@ function LandingPage() {
         <p>
           Built with ❤️ by{" "}
           <a
+            target="_blank"
             href="https://github.com/francotechadmin"
             className="text-blue-400 hover:underline"
           >
