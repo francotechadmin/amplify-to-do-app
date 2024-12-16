@@ -24,9 +24,6 @@ function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [newTask, setNewTask] = useState("");
 
-  const API_URL =
-    process.env.NEXT_PUBLIC_API_URL || "https://your-api-endpoint"; // Replace with your API Gateway endpoint
-
   const fetchTasks = async () => {
     try {
       const user = await getCurrentUser();
@@ -38,7 +35,7 @@ function Home() {
       });
 
       const { body } = await getTasks.response;
-      const response = await body.json();
+      const response: Task[] = (await body.json()) as unknown as Task[];
 
       if (!response) {
         console.error("Error fetching tasks:", response);
@@ -76,7 +73,7 @@ function Home() {
       });
 
       const { body } = await postTask.response;
-      const response = await body.json();
+      const response = (await body.json()) as unknown as { task: Task };
 
       if (!response || !response.task) {
         console.error("Error adding task:", response);
@@ -139,8 +136,7 @@ function Home() {
         },
       });
 
-      const { body } = await putTask.response;
-      const response = await body.json();
+      await putTask.response;
 
       setTasks(
         tasks.map((task) =>
@@ -161,6 +157,8 @@ function Home() {
         apiName: "itemsApi",
         path: `/items/tasks/${userId}`,
       });
+
+      await deleteTasks.response;
 
       setTasks([]);
     } catch (error) {
@@ -192,7 +190,7 @@ function Home() {
           {tasks.length === 0 ? (
             <p className="text-gray-500">No tasks added yet.</p>
           ) : (
-            tasks.map((task: any) => (
+            tasks.map((task: Task) => (
               <li
                 key={task.TaskId}
                 className="p-2 flex items-center justify-between w-full sm:w-auto"
