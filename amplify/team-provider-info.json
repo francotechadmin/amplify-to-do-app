@@ -23,7 +23,7 @@
         },
         "itemsLambdaV2": {
           "deploymentBucketName": "amplify-tododemo-dev-0ab6c-deployment",
-          "s3Key": "amplify-builds/itemsLambdaV2-4a63562b596e4b744131-build.zip"
+          "s3Key": "amplify-builds/itemsLambdaV2-6b35716c49535053666d-build.zip"
         }
       },
       "api": {

@@ -16,7 +16,7 @@ const dayjs = require("dayjs"); // For timestamp management
 const ddbClient = new DynamoDBClient({ region: process.env.TABLE_REGION });
 const ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
 
-const tableName = process.env.TABLE_NAME || "TodoTable";
+const tableName = process.env.TABLE_NAME || `itemsTable-${process.env.ENV}`;
 
 // declare a new express app
 const app = express();
@@ -37,7 +37,7 @@ const getCurrentTimestamp = () => dayjs().toISOString();
  * HTTP Get method to list tasks for a user *
  ************************************/
 
-app.get("/tasks/:UserId", async (req, res) => {
+app.get("/items/tasks/:UserId", async (req, res) => {
   const { UserId } = req.params;
 
   const params = {
@@ -60,7 +60,7 @@ app.get("/tasks/:UserId", async (req, res) => {
  * HTTP Post method to add a new task *
  *****************************************/
 
-app.post("/tasks", async (req, res) => {
+app.post("/items/tasks", async (req, res) => {
   const { UserId, TaskContent } = req.body;
 
   if (!UserId || !TaskContent) {
@@ -95,7 +95,7 @@ app.post("/tasks", async (req, res) => {
  * HTTP Put method to update a task *
  *****************************************/
 
-app.put("/tasks/:UserId/:TaskId", async (req, res) => {
+app.put("/items/tasks/:UserId/:TaskId", async (req, res) => {
   const { UserId, TaskId } = req.params;
   const { TaskContent, IsCompleted } = req.body;
 
@@ -103,35 +103,16 @@ app.put("/tasks/:UserId/:TaskId", async (req, res) => {
     return res.status(400).json({ error: "No valid fields to update" });
   }
 
-  const updateExpression = [];
-  const expressionAttributeValues = {};
-  const expressionAttributeNames = {};
-
-  if (TaskContent) {
-    updateExpression.push("#tc = :taskContent");
-    expressionAttributeValues[":taskContent"] = TaskContent;
-    expressionAttributeNames["#tc"] = "TaskContent";
-  }
-
-  if (IsCompleted !== undefined) {
-    updateExpression.push("#ic = :isCompleted");
-    expressionAttributeValues[":isCompleted"] = IsCompleted;
-    expressionAttributeNames["#ic"] = "IsCompleted";
-  }
-
-  updateExpression.push("#ua = :updatedAt");
-  expressionAttributeValues[":updatedAt"] = getCurrentTimestamp();
-  expressionAttributeNames["#ua"] = "UpdatedAt";
-
   const params = {
     TableName: tableName,
-    Key: { UserId, TaskId },
-    UpdateExpression: "SET " + updateExpression.join(", "),
-    ExpressionAttributeValues: expressionAttributeValues,
-    ExpressionAttributeNames: expressionAttributeNames,
-    ReturnValues: "ALL_NEW",
+    Item: {
+      UserId,
+      TaskId,
+      TaskContent,
+      IsCompleted,
+      UpdatedAt: getCurrentTimestamp(),
+    },
   };
-
   try {
     const data = await ddbDocClient.send(new PutCommand(params));
     res.json({ success: "Task updated", task: data.Attributes });
@@ -144,7 +125,7 @@ app.put("/tasks/:UserId/:TaskId", async (req, res) => {
  * HTTP Delete method to remove a task *
  ***************************************/
 
-app.delete("/tasks/:UserId/:TaskId", async (req, res) => {
+app.delete("/items/tasks/:UserId/:TaskId", async (req, res) => {
   const { UserId, TaskId } = req.params;
 
   const params = {
@@ -157,6 +138,43 @@ app.delete("/tasks/:UserId/:TaskId", async (req, res) => {
     res.json({ success: "Task deleted" });
   } catch (err) {
     res.status(500).json({ error: "Could not delete task: " + err.message });
+  }
+});
+
+/**************************************
+ * HTTP Delete method to clear all tasks *
+ ***************************************/
+
+app.delete("/items/tasks/:UserId", async (req, res) => {
+  const { UserId } = req.params;
+
+  const params = {
+    TableName: tableName,
+    KeyConditionExpression: "UserId = :userId",
+    ExpressionAttributeValues: {
+      ":userId": UserId,
+    },
+  };
+
+  try {
+    const data = await ddbDocClient.send(new QueryCommand(params));
+    if (data.Items.length === 0) {
+      return res.status(200).json({ error: "No tasks found" });
+    }
+
+    const tasks = data.Items; // Get all tasks
+
+    // Delete all tasks
+    for (const task of tasks) {
+      const deleteParams = {
+        TableName: tableName,
+        Key: { UserId, TaskId: task.TaskId },
+      };
+      await ddbDocClient.send(new DeleteCommand(deleteParams));
+    }
+    res.json({ success: "All tasks deleted" });
+  } catch (err) {
+    res.status(500).json({ error: "Could not delete tasks: " + err.message });
   }
 });
 
