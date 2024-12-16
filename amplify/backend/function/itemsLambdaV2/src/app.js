@@ -1,11 +1,3 @@
-/*
-Copyright 2017 - 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at
-    http://aws.amazon.com/apache2.0/
-or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and limitations under the License.
-*/
-
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const {
   DeleteCommand,
@@ -18,25 +10,13 @@ const {
 const awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 const bodyParser = require("body-parser");
 const express = require("express");
+const { v4: uuidv4 } = require("uuid"); // For generating TaskId
+const dayjs = require("dayjs"); // For timestamp management
 
 const ddbClient = new DynamoDBClient({ region: process.env.TABLE_REGION });
 const ddbDocClient = DynamoDBDocumentClient.from(ddbClient);
 
-let tableName = "itemsTable";
-if (process.env.ENV && process.env.ENV !== "NONE") {
-  tableName = tableName + "-" + process.env.ENV;
-}
-
-const userIdPresent = false; // TODO: update in case is required to use that definition
-const partitionKeyName = "UserId";
-const partitionKeyType = "S";
-const sortKeyName = "TaskId";
-const sortKeyType = "S";
-const hasSortKey = sortKeyName !== "";
-const path = "/items";
-const UNAUTH = "UNAUTH";
-const hashKeyPath = "/:" + partitionKeyName;
-const sortKeyPath = hasSortKey ? "/:" + sortKeyName : "";
+const tableName = process.env.TABLE_NAME || "TodoTable";
 
 // declare a new express app
 const app = express();
@@ -50,231 +30,138 @@ app.use(function (req, res, next) {
   next();
 });
 
-// convert url string param to expected Type
-const convertUrlType = (param, type) => {
-  switch (type) {
-    case "N":
-      return Number.parseInt(param);
-    default:
-      return param;
-  }
-};
+// Helper function to generate current timestamp
+const getCurrentTimestamp = () => dayjs().toISOString();
 
 /************************************
- * HTTP Get method to list objects *
+ * HTTP Get method to list tasks for a user *
  ************************************/
 
-app.get(path, async function (req, res) {
-  var params = {
+app.get("/tasks/:UserId", async (req, res) => {
+  const { UserId } = req.params;
+
+  const params = {
     TableName: tableName,
-    Select: "ALL_ATTRIBUTES",
+    KeyConditionExpression: "UserId = :userId",
+    ExpressionAttributeValues: {
+      ":userId": UserId,
+    },
   };
 
   try {
-    const data = await ddbDocClient.send(new ScanCommand(params));
+    const data = await ddbDocClient.send(new QueryCommand(params));
     res.json(data.Items);
   } catch (err) {
-    res.statusCode = 500;
-    res.json({ error: "Could not load items: " + err.message });
-  }
-});
-
-/************************************
- * HTTP Get method to query objects *
- ************************************/
-
-app.get(path + hashKeyPath, async function (req, res) {
-  const condition = {};
-  condition[partitionKeyName] = {
-    ComparisonOperator: "EQ",
-  };
-
-  if (userIdPresent && req.apiGateway) {
-    condition[partitionKeyName]["AttributeValueList"] = [
-      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH,
-    ];
-  } else {
-    try {
-      condition[partitionKeyName]["AttributeValueList"] = [
-        convertUrlType(req.params[partitionKeyName], partitionKeyType),
-      ];
-    } catch (err) {
-      res.statusCode = 500;
-      res.json({ error: "Wrong column type " + err });
-    }
-  }
-
-  let queryParams = {
-    TableName: tableName,
-    KeyConditions: condition,
-  };
-
-  try {
-    const data = await ddbDocClient.send(new QueryCommand(queryParams));
-    res.json(data.Items);
-  } catch (err) {
-    res.statusCode = 500;
-    res.json({ error: "Could not load items: " + err.message });
+    res.status(500).json({ error: "Could not retrieve tasks: " + err.message });
   }
 });
 
 /*****************************************
- * HTTP Get method for get single object *
+ * HTTP Post method to add a new task *
  *****************************************/
 
-app.get(
-  path + "/object" + hashKeyPath + sortKeyPath,
-  async function (req, res) {
-    const params = {};
-    if (userIdPresent && req.apiGateway) {
-      params[partitionKeyName] =
-        req.apiGateway.event.requestContext.identity.cognitoIdentityId ||
-        UNAUTH;
-    } else {
-      params[partitionKeyName] = req.params[partitionKeyName];
-      try {
-        params[partitionKeyName] = convertUrlType(
-          req.params[partitionKeyName],
-          partitionKeyType
-        );
-      } catch (err) {
-        res.statusCode = 500;
-        res.json({ error: "Wrong column type " + err });
-      }
-    }
-    if (hasSortKey) {
-      try {
-        params[sortKeyName] = convertUrlType(
-          req.params[sortKeyName],
-          sortKeyType
-        );
-      } catch (err) {
-        res.statusCode = 500;
-        res.json({ error: "Wrong column type " + err });
-      }
-    }
+app.post("/tasks", async (req, res) => {
+  const { UserId, TaskContent } = req.body;
 
-    let getItemParams = {
-      TableName: tableName,
-      Key: params,
-    };
-
-    try {
-      const data = await ddbDocClient.send(new GetCommand(getItemParams));
-      if (data.Item) {
-        res.json(data.Item);
-      } else {
-        res.json(data);
-      }
-    } catch (err) {
-      res.statusCode = 500;
-      res.json({ error: "Could not load items: " + err.message });
-    }
-  }
-);
-
-/************************************
- * HTTP put method for insert object *
- *************************************/
-
-app.put(path, async function (req, res) {
-  if (userIdPresent) {
-    req.body["userId"] =
-      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+  if (!UserId || !TaskContent) {
+    return res
+      .status(400)
+      .json({ error: "UserId and TaskContent are required" });
   }
 
-  let putItemParams = {
-    TableName: tableName,
-    Item: req.body,
+  const newTask = {
+    UserId,
+    TaskId: uuidv4(),
+    TaskContent,
+    IsCompleted: false,
+    CreatedAt: getCurrentTimestamp(),
+    UpdatedAt: getCurrentTimestamp(),
   };
+
+  const params = {
+    TableName: tableName,
+    Item: newTask,
+  };
+
   try {
-    let data = await ddbDocClient.send(new PutCommand(putItemParams));
-    res.json({ success: "put call succeed!", url: req.url, data: data });
+    await ddbDocClient.send(new PutCommand(params));
+    res.json({ success: "Task added", task: newTask });
   } catch (err) {
-    res.statusCode = 500;
-    res.json({ error: err, url: req.url, body: req.body });
+    res.status(500).json({ error: "Could not add task: " + err.message });
   }
 });
 
-/************************************
- * HTTP post method for insert object *
- *************************************/
+/*****************************************
+ * HTTP Put method to update a task *
+ *****************************************/
 
-app.post(path, async function (req, res) {
-  if (userIdPresent) {
-    req.body["userId"] =
-      req.apiGateway.event.requestContext.identity.cognitoIdentityId || UNAUTH;
+app.put("/tasks/:UserId/:TaskId", async (req, res) => {
+  const { UserId, TaskId } = req.params;
+  const { TaskContent, IsCompleted } = req.body;
+
+  if (!TaskContent && IsCompleted === undefined) {
+    return res.status(400).json({ error: "No valid fields to update" });
   }
 
-  let putItemParams = {
+  const updateExpression = [];
+  const expressionAttributeValues = {};
+  const expressionAttributeNames = {};
+
+  if (TaskContent) {
+    updateExpression.push("#tc = :taskContent");
+    expressionAttributeValues[":taskContent"] = TaskContent;
+    expressionAttributeNames["#tc"] = "TaskContent";
+  }
+
+  if (IsCompleted !== undefined) {
+    updateExpression.push("#ic = :isCompleted");
+    expressionAttributeValues[":isCompleted"] = IsCompleted;
+    expressionAttributeNames["#ic"] = "IsCompleted";
+  }
+
+  updateExpression.push("#ua = :updatedAt");
+  expressionAttributeValues[":updatedAt"] = getCurrentTimestamp();
+  expressionAttributeNames["#ua"] = "UpdatedAt";
+
+  const params = {
     TableName: tableName,
-    Item: req.body,
+    Key: { UserId, TaskId },
+    UpdateExpression: "SET " + updateExpression.join(", "),
+    ExpressionAttributeValues: expressionAttributeValues,
+    ExpressionAttributeNames: expressionAttributeNames,
+    ReturnValues: "ALL_NEW",
   };
+
   try {
-    let data = await ddbDocClient.send(new PutCommand(putItemParams));
-    res.json({ success: "post call succeed!", url: req.url, data: data });
+    const data = await ddbDocClient.send(new PutCommand(params));
+    res.json({ success: "Task updated", task: data.Attributes });
   } catch (err) {
-    res.statusCode = 500;
-    res.json({ error: err, url: req.url, body: req.body });
+    res.status(500).json({ error: "Could not update task: " + err.message });
   }
 });
 
 /**************************************
- * HTTP remove method to delete object *
+ * HTTP Delete method to remove a task *
  ***************************************/
 
-app.delete(
-  path + "/object" + hashKeyPath + sortKeyPath,
-  async function (req, res) {
-    const params = {};
-    if (userIdPresent && req.apiGateway) {
-      params[partitionKeyName] =
-        req.apiGateway.event.requestContext.identity.cognitoIdentityId ||
-        UNAUTH;
-    } else {
-      params[partitionKeyName] = req.params[partitionKeyName];
-      try {
-        params[partitionKeyName] = convertUrlType(
-          req.params[partitionKeyName],
-          partitionKeyType
-        );
-      } catch (err) {
-        res.statusCode = 500;
-        res.json({ error: "Wrong column type " + err });
-      }
-    }
-    if (hasSortKey) {
-      try {
-        params[sortKeyName] = convertUrlType(
-          req.params[sortKeyName],
-          sortKeyType
-        );
-      } catch (err) {
-        res.statusCode = 500;
-        res.json({ error: "Wrong column type " + err });
-      }
-    }
+app.delete("/tasks/:UserId/:TaskId", async (req, res) => {
+  const { UserId, TaskId } = req.params;
 
-    let removeItemParams = {
-      TableName: tableName,
-      Key: params,
-    };
+  const params = {
+    TableName: tableName,
+    Key: { UserId, TaskId },
+  };
 
-    try {
-      let data = await ddbDocClient.send(new DeleteCommand(removeItemParams));
-      res.json({ url: req.url, data: data });
-    } catch (err) {
-      res.statusCode = 500;
-      res.json({ error: err, url: req.url });
-    }
+  try {
+    await ddbDocClient.send(new DeleteCommand(params));
+    res.json({ success: "Task deleted" });
+  } catch (err) {
+    res.status(500).json({ error: "Could not delete task: " + err.message });
   }
-);
+});
 
 app.listen(3000, function () {
   console.log("App started");
 });
 
-// Export the app object. When executing the application local this does nothing. However,
-// to port it to AWS Lambda we will create a wrapper around that will load the app from
-// this file
 module.exports = app;
