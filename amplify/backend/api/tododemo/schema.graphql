@@ -10,3 +10,9 @@ type Todo @model @auth(rules: [{ allow: owner, ownerField: "author" }]) {
   updatedAt: AWSDateTime! @auth(rules: [{ allow: owner }]) # Timestamp when the task was last updated
   owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }]) # The user who owns the task
 }
+
+type User @model {
+  id: ID!
+  username: String!
+  subscriptionStatus: String! # active, inactive, or null
+}

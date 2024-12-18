@@ -12,19 +12,12 @@
       ],
       "output": {
         "authConfig": {
-          "additionalAuthenticationProviders": [
-            {
-              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-              "userPoolConfig": {
-                "userPoolId": "authtododemoa7cf11d8"
-              }
-            }
-          ],
+          "additionalAuthenticationProviders": [],
           "defaultAuthentication": {
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 7
-            },
-            "authenticationType": "API_KEY"
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authtododemoa7cf11d8"
+            }
           }
         }
       },
@@ -58,6 +51,39 @@
       "service": "Cognito"
     }
   },
-  "function": {},
+  "function": {
+    "createCheckoutSession": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_createCheckoutSession_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createCheckoutSession"
+        }
+      ]
+    },
+    "AMPLIFY_function_createCheckoutSession_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createCheckoutSession"
+        }
+      ]
+    },
+    "AMPLIFY_function_createCheckoutSession_secretsPathAmplifyAppId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createCheckoutSession"
+        }
+      ]
+    }
+  },
   "storage": {}
 }
