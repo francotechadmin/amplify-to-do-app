@@ -8,6 +8,16 @@ type GeneratedMutation<InputType, OutputType> = string & {
   __generatedMutationOutput: OutputType;
 };
 
+export const createCheckoutSession = /* GraphQL */ `mutation CreateCheckoutSession($input: CreateCheckoutSessionInput!) {
+  createCheckoutSession(input: $input) {
+    id
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateCheckoutSessionMutationVariables,
+  APITypes.CreateCheckoutSessionMutation
+>;
 export const createTodo = /* GraphQL */ `mutation CreateTodo(
   $input: CreateTodoInput!
   $condition: ModelTodoConditionInput
@@ -75,6 +85,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
     subscriptionStatus
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -92,6 +103,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
     subscriptionStatus
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -109,6 +121,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
     subscriptionStatus
     createdAt
     updatedAt
+    owner
     __typename
   }
 }

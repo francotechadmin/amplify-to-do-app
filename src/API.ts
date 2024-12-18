@@ -2,6 +2,17 @@
 /* eslint-disable */
 //  This file was automatically generated and should not be edited.
 
+export type CreateCheckoutSessionInput = {
+  planId: string,
+  userId: string,
+  email: string,
+};
+
+export type CheckoutSession = {
+  __typename: "CheckoutSession",
+  id: string,
+};
+
 export type CreateTodoInput = {
   id?: string | null,
   author: string,
@@ -110,6 +121,7 @@ export type ModelUserConditionInput = {
   not?: ModelUserConditionInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
+  owner?: ModelStringInput | null,
 };
 
 export type User = {
@@ -119,6 +131,7 @@ export type User = {
   subscriptionStatus: string,
   createdAt: string,
   updatedAt: string,
+  owner?: string | null,
 };
 
 export type UpdateUserInput = {
@@ -175,6 +188,7 @@ export type ModelUserFilterInput = {
   and?: Array< ModelUserFilterInput | null > | null,
   or?: Array< ModelUserFilterInput | null > | null,
   not?: ModelUserFilterInput | null,
+  owner?: ModelStringInput | null,
 };
 
 export type ModelUserConnection = {
@@ -238,6 +252,18 @@ export type ModelSubscriptionUserFilterInput = {
   updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionUserFilterInput | null > | null,
   or?: Array< ModelSubscriptionUserFilterInput | null > | null,
+  owner?: ModelStringInput | null,
+};
+
+export type CreateCheckoutSessionMutationVariables = {
+  input: CreateCheckoutSessionInput,
+};
+
+export type CreateCheckoutSessionMutation = {
+  createCheckoutSession?:  {
+    __typename: "CheckoutSession",
+    id: string,
+  } | null,
 };
 
 export type CreateTodoMutationVariables = {
@@ -307,6 +333,7 @@ export type CreateUserMutation = {
     subscriptionStatus: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -323,6 +350,7 @@ export type UpdateUserMutation = {
     subscriptionStatus: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -339,6 +367,7 @@ export type DeleteUserMutation = {
     subscriptionStatus: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -394,6 +423,7 @@ export type GetUserQuery = {
     subscriptionStatus: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
@@ -413,6 +443,7 @@ export type ListUsersQuery = {
       subscriptionStatus: string,
       createdAt: string,
       updatedAt: string,
+      owner?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -474,6 +505,7 @@ export type OnDeleteTodoSubscription = {
 
 export type OnCreateUserSubscriptionVariables = {
   filter?: ModelSubscriptionUserFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnCreateUserSubscription = {
@@ -484,11 +516,13 @@ export type OnCreateUserSubscription = {
     subscriptionStatus: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
 export type OnUpdateUserSubscriptionVariables = {
   filter?: ModelSubscriptionUserFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnUpdateUserSubscription = {
@@ -499,11 +533,13 @@ export type OnUpdateUserSubscription = {
     subscriptionStatus: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };
 
 export type OnDeleteUserSubscriptionVariables = {
   filter?: ModelSubscriptionUserFilterInput | null,
+  owner?: string | null,
 };
 
 export type OnDeleteUserSubscription = {
@@ -514,5 +550,6 @@ export type OnDeleteUserSubscription = {
     subscriptionStatus: string,
     createdAt: string,
     updatedAt: string,
+    owner?: string | null,
   } | null,
 };

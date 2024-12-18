@@ -49,6 +49,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
     subscriptionStatus
     createdAt
     updatedAt
+    owner
     __typename
   }
 }
@@ -65,6 +66,7 @@ export const listUsers = /* GraphQL */ `query ListUsers(
       subscriptionStatus
       createdAt
       updatedAt
+      owner
       __typename
     }
     nextToken

@@ -23,7 +23,7 @@
         "createCheckoutSession": {
           "secretsPathAmplifyAppId": "ds5im9z8tc6j1",
           "deploymentBucketName": "amplify-tododemo-dev-0ab6c-deployment",
-          "s3Key": "amplify-builds/createCheckoutSession-752b514b596a37727273-build.zip"
+          "s3Key": "amplify-builds/createCheckoutSession-2b414a7a41722f674878-build.zip"
         }
       }
     }

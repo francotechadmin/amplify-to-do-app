@@ -11,8 +11,23 @@ type Todo @model @auth(rules: [{ allow: owner, ownerField: "author" }]) {
   owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }]) # The user who owns the task
 }
 
-type User @model {
+type User @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   username: String!
   subscriptionStatus: String! # active, inactive, or null
+}
+
+type Mutation {
+  createCheckoutSession(input: CreateCheckoutSessionInput!): CheckoutSession
+    @function(name: "createCheckoutSession-dev")
+}
+
+input CreateCheckoutSessionInput {
+  planId: String!
+  userId: String!
+  email: String!
+}
+
+type CheckoutSession {
+  id: String!
 }
