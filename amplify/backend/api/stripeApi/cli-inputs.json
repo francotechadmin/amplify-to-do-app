@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/stripeWebhook": {
+      "name": "/stripeWebhook",
+      "lambdaFunction": "stripeWebhook",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

@@ -14,11 +14,19 @@ export const onCreateTodo = /* GraphQL */ `subscription OnCreateTodo(
 ) {
   onCreateTodo(filter: $filter, owner: $owner) {
     id
-    author
     content
     isCompleted
     createdAt
     updatedAt
+    userID
+    user {
+      id
+      subscriptionStatus
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
     owner
     __typename
   }
@@ -33,11 +41,19 @@ export const onUpdateTodo = /* GraphQL */ `subscription OnUpdateTodo(
 ) {
   onUpdateTodo(filter: $filter, owner: $owner) {
     id
-    author
     content
     isCompleted
     createdAt
     updatedAt
+    userID
+    user {
+      id
+      subscriptionStatus
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
     owner
     __typename
   }
@@ -52,11 +68,19 @@ export const onDeleteTodo = /* GraphQL */ `subscription OnDeleteTodo(
 ) {
   onDeleteTodo(filter: $filter, owner: $owner) {
     id
-    author
     content
     isCompleted
     createdAt
     updatedAt
+    userID
+    user {
+      id
+      subscriptionStatus
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
     owner
     __typename
   }
@@ -71,8 +95,11 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser(
 ) {
   onCreateUser(filter: $filter, owner: $owner) {
     id
-    username
     subscriptionStatus
+    todos {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     owner
@@ -89,8 +116,11 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser(
 ) {
   onUpdateUser(filter: $filter, owner: $owner) {
     id
-    username
     subscriptionStatus
+    todos {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     owner
@@ -107,8 +137,11 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser(
 ) {
   onDeleteUser(filter: $filter, owner: $owner) {
     id
-    username
     subscriptionStatus
+    todos {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     owner

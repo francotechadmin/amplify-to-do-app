@@ -11,11 +11,19 @@ type GeneratedQuery<InputType, OutputType> = string & {
 export const getTodo = /* GraphQL */ `query GetTodo($id: ID!) {
   getTodo(id: $id) {
     id
-    author
     content
     isCompleted
     createdAt
     updatedAt
+    userID
+    user {
+      id
+      subscriptionStatus
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
     owner
     __typename
   }
@@ -29,11 +37,11 @@ export const listTodos = /* GraphQL */ `query ListTodos(
   listTodos(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      author
       content
       isCompleted
       createdAt
       updatedAt
+      userID
       owner
       __typename
     }
@@ -45,8 +53,11 @@ export const listTodos = /* GraphQL */ `query ListTodos(
 export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
   getUser(id: $id) {
     id
-    username
     subscriptionStatus
+    todos {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     owner
@@ -62,7 +73,6 @@ export const listUsers = /* GraphQL */ `query ListUsers(
   listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      username
       subscriptionStatus
       createdAt
       updatedAt

@@ -42,6 +42,9 @@ exports.handler = async (event) => {
         },
       ],
       mode: "subscription",
+      metadata: {
+        userId: userId,
+      },
       customer_email: email,
       success_url: "http://localhost:3000/app",
       cancel_url: "http://localhost:3000/app",

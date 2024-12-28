@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "api": {
+      "tododemo": [
+        "Query",
+        "Mutation"
+      ]
+    }
+  },
+  "lambdaLayers": [],
+  "secretNames": [
+    "STRIPE_SECRET_KEY",
+    "STRIPE_WEBHOOK_SECRET",
+    "STRIPE_SECRET_KEY_WEBHOOK"
+  ]
+}

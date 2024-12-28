@@ -24,11 +24,19 @@ export const createTodo = /* GraphQL */ `mutation CreateTodo(
 ) {
   createTodo(input: $input, condition: $condition) {
     id
-    author
     content
     isCompleted
     createdAt
     updatedAt
+    userID
+    user {
+      id
+      subscriptionStatus
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
     owner
     __typename
   }
@@ -43,11 +51,19 @@ export const updateTodo = /* GraphQL */ `mutation UpdateTodo(
 ) {
   updateTodo(input: $input, condition: $condition) {
     id
-    author
     content
     isCompleted
     createdAt
     updatedAt
+    userID
+    user {
+      id
+      subscriptionStatus
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
     owner
     __typename
   }
@@ -62,11 +78,19 @@ export const deleteTodo = /* GraphQL */ `mutation DeleteTodo(
 ) {
   deleteTodo(input: $input, condition: $condition) {
     id
-    author
     content
     isCompleted
     createdAt
     updatedAt
+    userID
+    user {
+      id
+      subscriptionStatus
+      createdAt
+      updatedAt
+      owner
+      __typename
+    }
     owner
     __typename
   }
@@ -81,8 +105,11 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
 ) {
   createUser(input: $input, condition: $condition) {
     id
-    username
     subscriptionStatus
+    todos {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     owner
@@ -99,8 +126,11 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
 ) {
   updateUser(input: $input, condition: $condition) {
     id
-    username
     subscriptionStatus
+    todos {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     owner
@@ -117,8 +147,11 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
 ) {
   deleteUser(input: $input, condition: $condition) {
     id
-    username
     subscriptionStatus
+    todos {
+      nextToken
+      __typename
+    }
     createdAt
     updatedAt
     owner
@@ -128,4 +161,22 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
 ` as GeneratedMutation<
   APITypes.DeleteUserMutationVariables,
   APITypes.DeleteUserMutation
+>;
+export const updateUserSubscriptionStatus = /* GraphQL */ `mutation UpdateUserSubscriptionStatus($input: UpdateUserSubscriptionInput!) {
+  updateUserSubscriptionStatus(input: $input) {
+    id
+    subscriptionStatus
+    todos {
+      nextToken
+      __typename
+    }
+    createdAt
+    updatedAt
+    owner
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateUserSubscriptionStatusMutationVariables,
+  APITypes.UpdateUserSubscriptionStatusMutation
 >;

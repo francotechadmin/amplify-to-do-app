@@ -17,13 +17,19 @@
         "tododemoa7cf11d8": {}
       },
       "api": {
-        "tododemo": {}
+        "tododemo": {},
+        "stripeApi": {}
       },
       "function": {
         "createCheckoutSession": {
           "secretsPathAmplifyAppId": "ds5im9z8tc6j1",
           "deploymentBucketName": "amplify-tododemo-dev-0ab6c-deployment",
-          "s3Key": "amplify-builds/createCheckoutSession-732f3150427036597437-build.zip"
+          "s3Key": "amplify-builds/createCheckoutSession-7a6e32756e496b483376-build.zip"
+        },
+        "stripeWebhook": {
+          "secretsPathAmplifyAppId": "ds5im9z8tc6j1",
+          "deploymentBucketName": "amplify-tododemo-dev-0ab6c-deployment",
+          "s3Key": "amplify-builds/stripeWebhook-456c474a486e69754436-build.zip"
         }
       }
     }
