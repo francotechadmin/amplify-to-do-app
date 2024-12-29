@@ -46,8 +46,8 @@ exports.handler = async (event) => {
         userId: userId,
       },
       customer_email: email,
-      success_url: "http://localhost:3000/app",
-      cancel_url: "http://localhost:3000/app",
+      success_url: process.env.STRIPE_SUCCESS_URL,
+      cancel_url: process.env.STRIPE_CANCEL_URL,
     });
 
     return {

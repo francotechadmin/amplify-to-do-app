@@ -18,6 +18,12 @@
     },
     "secretsPathAmplifyAppId": {
       "Type": "String"
+    },
+    "stripeSuccessUrl": {
+      "Type": "String"
+    },
+    "stripeCancelUrl": {
+      "Type": "String"
     }
   },
   "Conditions": {
@@ -94,6 +100,12 @@
                   "STRIPE_SECRET_KEY"
                 ]
               ]
+            },
+            "STRIPE_SUCCESS_URL": {
+              "Ref": "stripeSuccessUrl"
+            },
+            "STRIPE_CANCEL_URL": {
+              "Ref": "stripeCancelUrl"
             }
           }
         },

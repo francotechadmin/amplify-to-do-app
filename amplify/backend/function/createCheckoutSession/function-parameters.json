@@ -2,5 +2,15 @@
   "lambdaLayers": [],
   "secretNames": [
     "STRIPE_SECRET_KEY"
+  ],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "stripeSuccessUrl",
+      "environmentVariableName": "STRIPE_SUCCESS_URL"
+    },
+    {
+      "cloudFormationParameterName": "stripeCancelUrl",
+      "environmentVariableName": "STRIPE_CANCEL_URL"
+    }
   ]
 }

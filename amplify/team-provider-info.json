@@ -24,7 +24,9 @@
         "createCheckoutSession": {
           "secretsPathAmplifyAppId": "ds5im9z8tc6j1",
           "deploymentBucketName": "amplify-tododemo-dev-0ab6c-deployment",
-          "s3Key": "amplify-builds/createCheckoutSession-7a6e32756e496b483376-build.zip"
+          "s3Key": "amplify-builds/createCheckoutSession-36725678646279765143-build.zip",
+          "stripeSuccessUrl": "http://localhost:3000/app",
+          "stripeCancelUrl": "http://localhost:3000/app"
         },
         "stripeWebhook": {
           "secretsPathAmplifyAppId": "ds5im9z8tc6j1",

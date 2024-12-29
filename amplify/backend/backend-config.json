@@ -126,6 +126,22 @@
         }
       ]
     },
+    "AMPLIFY_function_createCheckoutSession_stripeCancelUrl": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createCheckoutSession"
+        }
+      ]
+    },
+    "AMPLIFY_function_createCheckoutSession_stripeSuccessUrl": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "createCheckoutSession"
+        }
+      ]
+    },
     "AMPLIFY_function_stripeWebhook_deploymentBucketName": {
       "usedBy": [
         {
