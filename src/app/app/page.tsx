@@ -91,15 +91,20 @@ const clearTasks = async () => {
 const handleCreateUser = async () => {
   const currentUser = await getCurrentUser();
   if (!currentUser) return;
+  let data;
 
-  // Attempt to fetch the user by their Cognito username (or sub, if that’s your ID)
-  const { data } = await client.graphql({
-    query: getUser,
-    variables: { id: currentUser.username },
-  });
+  try {
+    // Attempt to fetch the user by their Cognito username (or sub, if that’s your ID)
+    data = await client.graphql({
+      query: getUser,
+      variables: { id: currentUser.username },
+    });
+  } catch (error) {
+    console.error("Error fetching user:", error);
+  }
 
   // If the user doesn't exist, create it
-  if (!data?.getUser) {
+  if (!data || !data.data.getUser) {
     await client.graphql({
       query: createUser,
       variables: {
