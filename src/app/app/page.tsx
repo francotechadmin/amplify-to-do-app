@@ -35,6 +35,7 @@ const fetchTasks = async () => {
   return response.data.listTodos.items.map((task) => ({
     TaskId: task.id,
     TaskContent: task.content,
+    isCompleted: task.isCompleted,
   }));
 };
 
@@ -92,6 +93,23 @@ const clearTasks = async () => {
   }
 };
 
+const toggleComplete = async ({
+  taskId,
+  isCompleted,
+}: {
+  taskId: string;
+  isCompleted: boolean;
+}) => {
+  const response = await client.graphql({
+    query: updateTodo,
+    variables: { input: { id: taskId, isCompleted: isCompleted } },
+  });
+  return {
+    TaskId: response.data.updateTodo.id,
+    TaskContent: response.data.updateTodo.content,
+  };
+};
+
 const fetchUser = async (userId: string) => {
   const response = await client.graphql({
     query: getUser,
@@ -144,7 +162,10 @@ function Home() {
     mutationFn: addTask,
     onMutate: (newTask) => {
       queryClient.setQueryData(["tasks"], (old: any) => {
-        return [...(old || []), { TaskId: "optimistic", TaskContent: newTask }];
+        return [
+          ...(old || []),
+          { TaskId: `temp-${Date.now()}`, TaskContent: newTask },
+        ];
       });
     },
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
@@ -180,7 +201,21 @@ function Home() {
   const { mutate: handleClearTasks } = useMutation({
     mutationFn: clearTasks,
     onMutate: () => {
+      // Optimistically update the UI
       queryClient.setQueryData(["tasks"], []);
+    },
+    onSettled: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+  });
+
+  // 6) Toggle Task Completion
+  const { mutate: handleToggleComplete } = useMutation({
+    mutationFn: toggleComplete,
+    onMutate: ({ taskId, isCompleted }) => {
+      queryClient.setQueryData(["tasks"], (old: any) => {
+        return old.map((task: any) =>
+          task.TaskId === taskId ? { ...task, isCompleted: isCompleted } : task
+        );
+      });
     },
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
   });
@@ -189,6 +224,7 @@ function Home() {
   useEffect(() => {
     handleCreateUser(setShowWelcomeModal);
   }, []);
+  console.log(tasks);
 
   return (
     <div className="flex flex-col flex-1 min-h-0 p-4">
@@ -215,6 +251,13 @@ function Home() {
           }
           onRemoveTask={handleRemoveTask}
           onClearAll={handleClearTasks}
+          onToggleComplete={(taskId: string) =>
+            handleToggleComplete({
+              taskId,
+              isCompleted: !tasks.find((task) => task.TaskId === taskId)
+                ?.isCompleted,
+            })
+          }
         />
       </div>
 

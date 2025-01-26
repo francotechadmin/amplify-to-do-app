@@ -3,16 +3,13 @@ import React, { useState, useEffect } from "react";
 import TaskItem, { Task } from "../TaskItem";
 
 interface TaskListProps {
-  tasks: Omit<Task, "isCompleted">[]; // incoming tasks may not have isCompleted
+  tasks: Task[];
   isLoading: boolean;
   onAddTask: (content: string) => void;
-  // If you store 'isCompleted' in your backend, pass an update function here:
-  // onUpdateTask: (taskId: string, newData: Partial<Task>) => void;
-
-  // For now, we keep editing/deleting in the same style as your original
   onEditTask: (taskId: string, newContent: string) => void;
   onRemoveTask: (taskId: string) => void;
   onClearAll: () => void;
+  onToggleComplete: (taskId: string) => void;
 }
 
 const TaskList: React.FC<TaskListProps> = ({
@@ -22,30 +19,9 @@ const TaskList: React.FC<TaskListProps> = ({
   onEditTask,
   onRemoveTask,
   onClearAll,
+  onToggleComplete,
 }) => {
   const [newTask, setNewTask] = useState("");
-  // Local state to handle "completed" status in the UI
-  const [localTasks, setLocalTasks] = useState<Task[]>([]);
-
-  // Sync localTasks with incoming tasks whenever `tasks` changes
-  useEffect(() => {
-    // Initialize them with isCompleted = false (or any default)
-    const mapped = tasks.map((t) => ({
-      ...t,
-      isCompleted: false,
-    }));
-    setLocalTasks(mapped);
-  }, [tasks]);
-
-  // Toggle the 'isCompleted' for a particular task
-  const handleToggleComplete = (taskId: string) => {
-    setLocalTasks((prev) =>
-      prev.map((t) =>
-        t.TaskId === taskId ? { ...t, isCompleted: !t.isCompleted } : t
-      )
-    );
-    // If you want to persist this in the backend, call onUpdateTask(taskId, { isCompleted: ... })
-  };
 
   return (
     <div className="flex flex-col w-full h-full flex-1 min-h-0 gap-4 p-4">
@@ -84,14 +60,14 @@ const TaskList: React.FC<TaskListProps> = ({
          - `custom-scrollbar`: apply our custom scrollbar styles
       */}
       <ul className="flex flex-col list-none w-full space-y-2 custom-scrollbar flex-1 min-h-0 overflow-y-auto">
-        {localTasks.length === 0 && !isLoading ? (
+        {tasks.length === 0 && !isLoading ? (
           <p className="text-gray-500">No tasks added yet.</p>
         ) : (
-          localTasks.map((task) => (
+          tasks.map((task) => (
             <TaskItem
               key={task.TaskId}
               task={task}
-              onToggleComplete={handleToggleComplete}
+              onToggleComplete={onToggleComplete}
               onDelete={onRemoveTask}
             />
           ))
@@ -101,7 +77,7 @@ const TaskList: React.FC<TaskListProps> = ({
       {/* OPTIONAL EDIT BUTTON
           If you still want to allow prompt-based editing, you can do something like: */}
       <div className="hidden">
-        {localTasks.map((task) => (
+        {tasks.map((task) => (
           <button
             key={task.TaskId}
             onClick={() => {
@@ -117,7 +93,7 @@ const TaskList: React.FC<TaskListProps> = ({
       </div>
 
       {/* CLEAR ALL */}
-      {localTasks.length > 0 && (
+      {tasks.length > 0 && (
         <button
           onClick={() => onClearAll()}
           className="text-red-500 hover:underline"
