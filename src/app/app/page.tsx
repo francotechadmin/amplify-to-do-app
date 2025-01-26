@@ -191,7 +191,7 @@ function Home() {
   }, []);
 
   return (
-    <>
+    <div className="flex flex-col flex-1 min-h-0 p-4">
       {/* NAV BAR at the top */}
       <NavBar />
 
@@ -199,13 +199,13 @@ function Home() {
       {showWelcomeModal && (
         <WelcomeModal
           onClose={() => setShowWelcomeModal(false)}
-          onSubscribe={() => setShowWelcomeModal(false)} // or your subscription logic
+          onSubscribe={() => setShowWelcomeModal(false)} // On subscription logic
           isCreatingSession={false}
         />
       )}
 
       {/* MAIN CONTENT AREA */}
-      <div className="flex flex-col items-center justify-center py-8 h-[calc(100vh-64px-56px)]">
+      <div className="flex flex-col items-center justify-start max-w-90 pt-8 flex-1 min-h-0">
         <TaskList
           tasks={tasks}
           isLoading={isLoading}
@@ -219,8 +219,8 @@ function Home() {
       </div>
 
       {/* FOOTER at bottom */}
-      <Footer />
-    </>
+      {/* <Footer /> */}
+    </div>
   );
 }
 
