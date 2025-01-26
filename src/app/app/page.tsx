@@ -227,7 +227,7 @@ function Home() {
   console.log(tasks);
 
   return (
-    <div className="flex flex-col flex-1 min-h-0 p-4">
+    <div className="flex flex-col justify-center flex-1 min-h-0 p-4 w-full max-w-4xl">
       {/* NAV BAR at the top */}
       <NavBar />
 
