@@ -105,24 +105,7 @@ export type Todo = {
   createdAt: string,
   updatedAt: string,
   userID: string,
-  user?: User | null,
   owner?: string | null,
-};
-
-export type User = {
-  __typename: "User",
-  id: string,
-  subscriptionStatus: string,
-  todos?: ModelTodoConnection | null,
-  createdAt: string,
-  updatedAt: string,
-  owner?: string | null,
-};
-
-export type ModelTodoConnection = {
-  __typename: "ModelTodoConnection",
-  items:  Array<Todo | null >,
-  nextToken?: string | null,
 };
 
 export type UpdateTodoInput = {
@@ -153,6 +136,22 @@ export type ModelUserConditionInput = {
   owner?: ModelStringInput | null,
 };
 
+export type User = {
+  __typename: "User",
+  id: string,
+  subscriptionStatus: string,
+  todos?: ModelTodoConnection | null,
+  createdAt: string,
+  updatedAt: string,
+  owner?: string | null,
+};
+
+export type ModelTodoConnection = {
+  __typename: "ModelTodoConnection",
+  items:  Array<Todo | null >,
+  nextToken?: string | null,
+};
+
 export type UpdateUserInput = {
   id: string,
   subscriptionStatus?: string | null,
@@ -160,11 +159,6 @@ export type UpdateUserInput = {
 
 export type DeleteUserInput = {
   id: string,
-};
-
-export type UpdateUserSubscriptionInput = {
-  id: string,
-  subscriptionStatus: string,
 };
 
 export type ModelTodoFilterInput = {
@@ -279,14 +273,6 @@ export type CreateTodoMutation = {
     createdAt: string,
     updatedAt: string,
     userID: string,
-    user?:  {
-      __typename: "User",
-      id: string,
-      subscriptionStatus: string,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
-    } | null,
     owner?: string | null,
   } | null,
 };
@@ -305,14 +291,6 @@ export type UpdateTodoMutation = {
     createdAt: string,
     updatedAt: string,
     userID: string,
-    user?:  {
-      __typename: "User",
-      id: string,
-      subscriptionStatus: string,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
-    } | null,
     owner?: string | null,
   } | null,
 };
@@ -331,14 +309,6 @@ export type DeleteTodoMutation = {
     createdAt: string,
     updatedAt: string,
     userID: string,
-    user?:  {
-      __typename: "User",
-      id: string,
-      subscriptionStatus: string,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
-    } | null,
     owner?: string | null,
   } | null,
 };
@@ -403,25 +373,6 @@ export type DeleteUserMutation = {
   } | null,
 };
 
-export type UpdateUserSubscriptionStatusMutationVariables = {
-  input: UpdateUserSubscriptionInput,
-};
-
-export type UpdateUserSubscriptionStatusMutation = {
-  updateUserSubscriptionStatus?:  {
-    __typename: "User",
-    id: string,
-    subscriptionStatus: string,
-    todos?:  {
-      __typename: "ModelTodoConnection",
-      nextToken?: string | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    owner?: string | null,
-  } | null,
-};
-
 export type GetTodoQueryVariables = {
   id: string,
 };
@@ -435,14 +386,6 @@ export type GetTodoQuery = {
     createdAt: string,
     updatedAt: string,
     userID: string,
-    user?:  {
-      __typename: "User",
-      id: string,
-      subscriptionStatus: string,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
-    } | null,
     owner?: string | null,
   } | null,
 };
@@ -524,14 +467,6 @@ export type OnCreateTodoSubscription = {
     createdAt: string,
     updatedAt: string,
     userID: string,
-    user?:  {
-      __typename: "User",
-      id: string,
-      subscriptionStatus: string,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
-    } | null,
     owner?: string | null,
   } | null,
 };
@@ -550,14 +485,6 @@ export type OnUpdateTodoSubscription = {
     createdAt: string,
     updatedAt: string,
     userID: string,
-    user?:  {
-      __typename: "User",
-      id: string,
-      subscriptionStatus: string,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
-    } | null,
     owner?: string | null,
   } | null,
 };
@@ -576,14 +503,6 @@ export type OnDeleteTodoSubscription = {
     createdAt: string,
     updatedAt: string,
     userID: string,
-    user?:  {
-      __typename: "User",
-      id: string,
-      subscriptionStatus: string,
-      createdAt: string,
-      updatedAt: string,
-      owner?: string | null,
-    } | null,
     owner?: string | null,
   } | null,
 };

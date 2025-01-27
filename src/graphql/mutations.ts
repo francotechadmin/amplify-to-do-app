@@ -29,14 +29,6 @@ export const createTodo = /* GraphQL */ `mutation CreateTodo(
     createdAt
     updatedAt
     userID
-    user {
-      id
-      subscriptionStatus
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
     owner
     __typename
   }
@@ -56,14 +48,6 @@ export const updateTodo = /* GraphQL */ `mutation UpdateTodo(
     createdAt
     updatedAt
     userID
-    user {
-      id
-      subscriptionStatus
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
     owner
     __typename
   }
@@ -83,14 +67,6 @@ export const deleteTodo = /* GraphQL */ `mutation DeleteTodo(
     createdAt
     updatedAt
     userID
-    user {
-      id
-      subscriptionStatus
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
     owner
     __typename
   }
@@ -161,22 +137,4 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
 ` as GeneratedMutation<
   APITypes.DeleteUserMutationVariables,
   APITypes.DeleteUserMutation
->;
-export const updateUserSubscriptionStatus = /* GraphQL */ `mutation UpdateUserSubscriptionStatus($input: UpdateUserSubscriptionInput!) {
-  updateUserSubscriptionStatus(input: $input) {
-    id
-    subscriptionStatus
-    todos {
-      nextToken
-      __typename
-    }
-    createdAt
-    updatedAt
-    owner
-    __typename
-  }
-}
-` as GeneratedMutation<
-  APITypes.UpdateUserSubscriptionStatusMutationVariables,
-  APITypes.UpdateUserSubscriptionStatusMutation
 >;

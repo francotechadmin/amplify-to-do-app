@@ -16,14 +16,6 @@ export const getTodo = /* GraphQL */ `query GetTodo($id: ID!) {
     createdAt
     updatedAt
     userID
-    user {
-      id
-      subscriptionStatus
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
     owner
     __typename
   }

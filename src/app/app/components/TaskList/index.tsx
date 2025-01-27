@@ -1,9 +1,11 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import TaskItem, { Task } from "../TaskItem";
 
 interface TaskListProps {
   tasks: Task[];
+  pendingTasks: string | undefined;
+  addingTask: boolean;
   isLoading: boolean;
   onAddTask: (content: string) => void;
   onEditTask: (taskId: string, newContent: string) => void;
@@ -14,6 +16,8 @@ interface TaskListProps {
 
 const TaskList: React.FC<TaskListProps> = ({
   tasks,
+  pendingTasks,
+  addingTask,
   isLoading,
   onAddTask,
   onEditTask,
@@ -24,7 +28,7 @@ const TaskList: React.FC<TaskListProps> = ({
   const [newTask, setNewTask] = useState("");
 
   return (
-    <div className="flex flex-col w-full h-full flex-1 min-h-0 gap-4 p-4">
+    <div className="flex flex-col w-full h-full flex-1 gap-4 p-4">
       {/* CREATE NEW TASK */}
       <form
         className="flex rounded-full w-full bg-white focus-within:ring-2 ring-red-600 hover:ring-2"
@@ -49,33 +53,37 @@ const TaskList: React.FC<TaskListProps> = ({
           Add
         </button>
       </form>
-
       {isLoading && <div className="text-gray-600">Loading tasks...</div>}
-
       {/* TASKS LIST */}
-      {/* 
-        Make this UL scrollable:
-         - `overflow-y-auto`: enable vertical scroll
-         - `max-h-72`: limit container height to ~18rem
-         - `custom-scrollbar`: apply our custom scrollbar styles
-      */}
       <ul className="flex flex-col list-none w-full space-y-2 custom-scrollbar flex-1 min-h-0 overflow-y-auto">
         {tasks.length === 0 && !isLoading ? (
           <p className="text-gray-500">No tasks added yet.</p>
         ) : (
-          tasks.map((task) => (
-            <TaskItem
-              key={task.TaskId}
-              task={task}
-              onToggleComplete={onToggleComplete}
-              onDelete={onRemoveTask}
-            />
-          ))
+          <div>
+            {addingTask && pendingTasks && (
+              <TaskItem
+                task={{
+                  TaskId: pendingTasks,
+                  TaskContent: pendingTasks,
+                  isCompleted: false,
+                }}
+                onToggleComplete={() => {}}
+                onDelete={() => {}}
+              />
+            )}
+
+            {tasks.map((task) => (
+              <TaskItem
+                key={task.TaskId}
+                task={task}
+                onToggleComplete={onToggleComplete}
+                onDelete={onRemoveTask}
+              />
+            ))}
+          </div>
         )}
       </ul>
-
-      {/* OPTIONAL EDIT BUTTON
-          If you still want to allow prompt-based editing, you can do something like: */}
+      {/* Display hidden edit buttons */}
       <div className="hidden">
         {tasks.map((task) => (
           <button
@@ -91,7 +99,6 @@ const TaskList: React.FC<TaskListProps> = ({
           </button>
         ))}
       </div>
-
       {/* CLEAR ALL */}
       {tasks.length > 0 && (
         <button

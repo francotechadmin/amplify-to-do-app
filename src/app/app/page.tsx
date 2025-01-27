@@ -32,11 +32,16 @@ const client = generateClient({ authMode: "userPool" });
 // ======== HELPER FUNCTIONS ========
 const fetchTasks = async () => {
   const response = await client.graphql({ query: listTodos });
-  return response.data.listTodos.items.map((task) => ({
+  const taskArray = response.data.listTodos.items.map((task) => ({
     TaskId: task.id,
     TaskContent: task.content,
     isCompleted: task.isCompleted,
+    createdAt: new Date(task.createdAt),
   }));
+  // Sort tasks by creation date
+  return taskArray.sort(
+    (a, b) => b.createdAt.getTime() - a.createdAt.getTime()
+  );
 };
 
 const addTask = async (newTask: string) => {
@@ -158,22 +163,25 @@ function Home() {
   });
 
   // 2) Add Task
-  const { mutate: handleAddTask } = useMutation({
+  const {
+    mutate: handleAddTask,
+    isPending: addingTask,
+    variables,
+  } = useMutation({
     mutationFn: addTask,
-    onMutate: (newTask) => {
-      queryClient.setQueryData(["tasks"], (old: any) => {
-        return [
-          ...(old || []),
-          { TaskId: `temp-${Date.now()}`, TaskContent: newTask },
-        ];
-      });
-    },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+    onSuccess: (variables) =>
+      console.log("Task added successfully!", variables),
+    onError: (error) => console.error("Error adding task:", error),
+    onSettled: async () =>
+      await queryClient.invalidateQueries({ queryKey: ["tasks"] }),
   });
 
   // 3) Edit Task
   const { mutate: handleEditTask } = useMutation({
     mutationFn: updateTask,
+    onSuccess: (variables) =>
+      console.log("Task updated successfully!", variables),
+    onError: (error) => console.error("Error updating task:", error),
     onMutate: ({ taskId, newContent }) => {
       queryClient.setQueryData(["tasks"], (old: any) => {
         return old.map((task: any) =>
@@ -183,7 +191,8 @@ function Home() {
         );
       });
     },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+    onSettled: async () =>
+      await queryClient.invalidateQueries({ queryKey: ["tasks"] }),
   });
 
   // 4) Remove Task
@@ -194,22 +203,33 @@ function Home() {
         return old.filter((task: any) => task.TaskId !== taskId);
       });
     },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+    onSuccess: (variables) =>
+      console.log("Task removed successfully!", variables),
+    onError: (error) => console.error("Error removing task:", error),
+    onSettled: async () =>
+      await queryClient.invalidateQueries({ queryKey: ["tasks"] }),
   });
 
   // 5) Clear All
   const { mutate: handleClearTasks } = useMutation({
     mutationFn: clearTasks,
+    onSuccess: () => console.log("All tasks removed successfully!"),
+    onError: (error) => console.error("Error removing all tasks:", error),
     onMutate: () => {
       // Optimistically update the UI
       queryClient.setQueryData(["tasks"], []);
     },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+    onSettled: async () =>
+      await queryClient.invalidateQueries({ queryKey: ["tasks"] }),
   });
 
   // 6) Toggle Task Completion
   const { mutate: handleToggleComplete } = useMutation({
     mutationFn: toggleComplete,
+    onSuccess: (variables) =>
+      console.log("Task completion status updated successfully!", variables),
+    onError: (error) =>
+      console.error("Error updating task completion status:", error),
     onMutate: ({ taskId, isCompleted }) => {
       queryClient.setQueryData(["tasks"], (old: any) => {
         return old.map((task: any) =>
@@ -217,14 +237,15 @@ function Home() {
         );
       });
     },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+    onSettled: async () =>
+      await queryClient.invalidateQueries({ queryKey: ["tasks"] }),
   });
 
   // Ensure the user record exists on mount
   useEffect(() => {
     handleCreateUser(setShowWelcomeModal);
   }, []);
-  console.log(tasks);
+  console.log(`Tasks (${tasks.length}):`, tasks);
 
   return (
     <div className="flex flex-col justify-center flex-1 min-h-0 p-4 w-full max-w-4xl">
@@ -244,6 +265,8 @@ function Home() {
       <div className="flex flex-col items-center justify-start max-w-90 pt-8 flex-1 min-h-0">
         <TaskList
           tasks={tasks}
+          pendingTasks={variables}
+          addingTask={addingTask}
           isLoading={isLoading}
           onAddTask={handleAddTask}
           onEditTask={(taskId: string, newContent: string) =>

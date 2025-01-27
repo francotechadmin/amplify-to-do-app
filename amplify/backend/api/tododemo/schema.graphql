@@ -9,8 +9,6 @@ type Todo @model @auth(rules: [{ allow: owner }]) {
   updatedAt: AWSDateTime!
   # The field storing the user's ID
   userID: ID!
-  # Relationship back to User
-  user: User @belongsTo(fields: ["userID"])
 }
 
 type User

@@ -19,14 +19,6 @@ export const onCreateTodo = /* GraphQL */ `subscription OnCreateTodo(
     createdAt
     updatedAt
     userID
-    user {
-      id
-      subscriptionStatus
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
     owner
     __typename
   }
@@ -46,14 +38,6 @@ export const onUpdateTodo = /* GraphQL */ `subscription OnUpdateTodo(
     createdAt
     updatedAt
     userID
-    user {
-      id
-      subscriptionStatus
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
     owner
     __typename
   }
@@ -73,14 +57,6 @@ export const onDeleteTodo = /* GraphQL */ `subscription OnDeleteTodo(
     createdAt
     updatedAt
     userID
-    user {
-      id
-      subscriptionStatus
-      createdAt
-      updatedAt
-      owner
-      __typename
-    }
     owner
     __typename
   }
