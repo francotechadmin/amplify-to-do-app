@@ -30,7 +30,8 @@ function LandingPage() {
               Get Started
             </Link>
             <a
-              href="#features"
+              target="_blank"
+              href="https://github.com/francotechadmin/amplify-to-do-app"
               className="bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg text-lg font-medium transition-all"
             >
               Learn More
