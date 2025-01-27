@@ -40,6 +40,7 @@ function LandingPage() {
         {/* Hero Image */}
         <div className="relative max-w-md lg:max-w-lg hidden lg:block justify-self-center align-self-center border rounded">
           <Image
+            className="rounded-lg"
             src="/sc.png"
             alt="To-Do Pro App"
             height={500}
