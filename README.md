@@ -7,7 +7,7 @@
     <img src="public/vercel.svg" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">To-do Pro</h3>
+<h3 align="center">To-do List</h3>
   <p align="center">
     An awesome project to manage your activities!
     <br />
@@ -52,7 +52,7 @@
     <img src="public/sc.png" alt="drawing" width="300"/>
 </a>
 
-To-Do Pro is a sleek, user-friendly app designed to help you stay organized, track your tasks, and boost your productivity. Its modern UI ensures a seamless experience across devices. Whether you’re managing daily errands or complex projects, To-Do Pro has got you covered.
+To-Do List is a sleek, user-friendly app designed to help you stay organized, track your tasks, and boost your productivity. Its modern UI ensures a seamless experience across devices. Whether you’re managing daily errands or complex projects, To-Do List has got you covered.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -70,7 +70,7 @@ To-Do Pro is a sleek, user-friendly app designed to help you stay organized, tra
 
 ## Getting Started
 
-To get started with To-Do Pro, follow these instructions to set up the project locally.
+To get started with To-Do List, follow these instructions to set up the project locally.
 
 ### Prerequisites
 
