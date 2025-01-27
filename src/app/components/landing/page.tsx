@@ -4,12 +4,12 @@ import Image from "next/image";
 
 function LandingPage() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-8">
+    <div className="flex flex-col items-center justify-center min-h-screen  text-white p-8">
       {/* Title Section */}
       <div className="text-center max-w-4xl mb-12">
         <h1 className="text-5xl sm:text-6xl font-extrabold leading-tight">
           Organize Your Life with{" "}
-          <span className="text-blue-500">To-Do Pro</span>
+          <span className="text-red-500">To-Do List</span>
         </h1>
       </div>
       {/* Hero Section */}
@@ -25,7 +25,7 @@ function LandingPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center ">
             <Link
               href="/app"
-              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-medium transition-all"
+              className="bg-red-500 hover:bg-red-600 text-white px-6 py-3 rounded-lg text-lg font-medium transition-all"
             >
               Get Started
             </Link>
@@ -38,7 +38,7 @@ function LandingPage() {
           </div>
         </div>
         {/* Hero Image */}
-        <div className="relative max-w-md lg:max-w-lg justify-self-center align-self-center">
+        <div className="relative max-w-md lg:max-w-lg hidden lg:block justify-self-center align-self-center border rounded">
           <Image
             src="/sc.png"
             alt="To-Do Pro App"
@@ -50,7 +50,7 @@ function LandingPage() {
       </div>
 
       {/* Features Section */}
-      <section id="features" className="mt-16 w-full max-w-5xl text-gray-300">
+      {/* <section id="features" className="mt-16 w-full max-w-5xl text-gray-300">
         <h2 className="text-4xl font-bold text-center text-gray-100 mb-8">
           Features
         </h2>
@@ -92,7 +92,7 @@ function LandingPage() {
             </p>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Footer Section */}
       <footer className="mt-16 text-gray-500">
