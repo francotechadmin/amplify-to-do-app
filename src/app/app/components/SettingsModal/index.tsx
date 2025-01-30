@@ -32,10 +32,10 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
       onClick={onClose}
     >
       <div
-        className="relative bg-[#10121E] text-white p-6 rounded-md shadow-lg w-full max-w-xs text-center"
+        className="relative bg-[#10121E] text-white p-8 pb-10 rounded-md shadow-lg w-full max-w-xs text-center"
         onClick={(e) => e.stopPropagation()} // prevent close on modal click
       >
-        <div className="flex gap-1 items-center justify-center mb-4">
+        <div className="flex gap-1 items-center justify-center mb-8">
           <h2 className="text-xl font-bold">Settings</h2>
           <Settings size={20} color="white" />
         </div>
@@ -49,7 +49,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
               onClose(); // optionally close after they pick Subscribe
             }}
           >
-            Subscribe to use AI features ✨
+            Subscribe to AI features ✨
           </button>
         ) : (
           <button
