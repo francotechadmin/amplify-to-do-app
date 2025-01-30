@@ -1,11 +1,20 @@
 "use client"; // If you are using Next.js 13+ with the app router and need client components
 import React, { useState } from "react";
-import { signOut } from "aws-amplify/auth";
 import { PenLine, Settings } from "lucide-react";
 import SettingsModal from "../SettingsModal";
+import { useSubscription } from "../../../hooks/useSubscriptionStatus";
+import Loader from "../Loader";
 
 const NavBar: React.FC = () => {
   const [showSettings, setShowSettings] = useState(false);
+  const {
+    subscriptionStatus,
+    isCheckingSubscription,
+    handleSubscribe,
+    isCreatingSession,
+  } = useSubscription();
+
+  if (isCheckingSubscription) return <Loader />;
 
   return (
     <nav className="flex items-center justify-between w-full px-6 py-4 text-white">
@@ -25,9 +34,11 @@ const NavBar: React.FC = () => {
       <SettingsModal
         open={showSettings}
         onClose={() => setShowSettings(false)}
-        subscriptionStatus={"inactive"} // or "active" from your data
-        onSubscribe={() => console.log("Subscribe logic...")}
-        onManageSubscription={() => console.log("Manage logic...")}
+        subscriptionStatus={
+          subscriptionStatus === "active" ? "active" : "inactive"
+        }
+        onSubscribe={() => handleSubscribe()}
+        onManageSubscription={() => {}}
       />
     </nav>
   );

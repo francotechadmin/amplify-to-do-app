@@ -53,7 +53,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           </button>
         ) : (
           <button
-            className="w-full bg-white hover:bg-blue-700 text-blue py-2 px-4 rounded-full mb-2"
+            className="w-full bg-white hover:opacity-75 text-red-600 py-2 px-4 rounded-full mb-2"
             onClick={() => {
               onManageSubscription();
               onClose(); // optionally close after they pick Manage
