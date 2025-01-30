@@ -53,17 +53,13 @@ const SubscriptionModal: FC<SubscriptionModalProps> = ({
           </h2>
 
           <div>
-            <div className=" px-4 rounded-lg flex items-center gap-2">
+            <div className="text-lg px-4 rounded-lg flex items-center gap-2">
               <Circle size={14} />{" "}
-              <span className="font-medium">AI List Generation</span>
-            </div>
-            <div className=" px-4 rounded-lg flex items-center gap-2">
-              <Circle size={14} />
-              <span className="font-medium">1M Tokens</span>
+              <span className="font-medium">Unlimited List Generations</span>
             </div>
             <div className="px-4 rounded-lg flex items-center gap-2">
               <Circle size={14} />{" "}
-              <span className="font-medium">Unlimited Support</span>
+              <span className="font-medium">Unlimited Tech Support</span>
             </div>
           </div>
 
@@ -71,8 +67,8 @@ const SubscriptionModal: FC<SubscriptionModalProps> = ({
             <span className="text-4xl">$1</span>
             <span className="text-4xl">|</span>
             <div className="flex flex-col items-start">
-              <span className="text-md m-0 p-0">PER</span>
-              <span className="text-md m-0 p-0">MONTH</span>
+              <span className="text-sm m-0 p-0">PER</span>
+              <span className="text-sm m-0 p-0">MONTH</span>
             </div>
           </div>
 

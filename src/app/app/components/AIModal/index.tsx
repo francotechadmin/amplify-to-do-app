@@ -5,6 +5,7 @@ import { Check, FilePenLine, Repeat, Send, Trash } from "lucide-react";
 import { generateAiTodos } from "@/graphql/mutations";
 import { generateClient } from "aws-amplify/api";
 import { useMutation } from "@tanstack/react-query";
+import Loader from "../Loader";
 
 interface AITask {
   id: string;
@@ -107,11 +108,11 @@ const AiFeatureModal: React.FC<AiFeatureModalProps> = ({
         onClick={onClose}
       >
         <div
-          className="relative max-w-md w-full bg-gray-900 p-6 rounded shadow-md text-white text-md flex flex-col items-center mx-4"
+          className="relative max-w-md w-full bg-gray-900 p-6 rounded shadow-md text-white text-lg flex flex-col items-center mx-4"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Title */}
-          <h2 className="mb-4 text-lg font-semibold">
+          <h2 className="mb-4 text-xl font-semibold">
             Generate List using AI ✨
           </h2>
 
@@ -137,7 +138,7 @@ const AiFeatureModal: React.FC<AiFeatureModalProps> = ({
               disabled={isGenerating || !userPrompt.trim()}
             >
               {isGenerating ? (
-                "Generating..."
+                <Loader color="white" />
               ) : (
                 <Send size={16} className="inline" />
               )}
@@ -152,10 +153,10 @@ const AiFeatureModal: React.FC<AiFeatureModalProps> = ({
           )}
 
           {/* AI-generated list */}
-          <ul className="max-h-64 overflow-y-auto space-y-2 mb-4 w-full flex flex-col custom-scrollbar">
+          <ul className="h-64 overflow-y-auto space-y-2 mb-4 w-full flex flex-col custom-scrollbar">
             {tasks.length === 0 ? (
-              <p className="text-gray-500 text-sm">
-                Generate a list using the prompt above.
+              <p className="text-gray-500 text-sm w-full h-full flex items-center justify-center">
+                Your AI-generated list will appear here!
               </p>
             ) : (
               tasks.map((task) => (
@@ -183,23 +184,26 @@ const AiFeatureModal: React.FC<AiFeatureModalProps> = ({
             )}
           </ul>
 
+          {/* Footer Buttons - Hide if no tasks */}
+
           {/* Regenerate Button */}
           <button
             onClick={handleRegenerate}
             className="bg-white text-red-600 w-44 py-2 rounded-full text-sm hover:opacity-75 mb-4 disabled:opacity-60"
             disabled={isGenerating || !userPrompt.trim()}
+            hidden={tasks.length === 0}
           >
             {isGenerating ? "Regenerating..." : "Regenerate"}
             <Repeat size={16} className="inline ml-2" />
           </button>
 
-          {/* Footer Buttons */}
           <div className="flex justify-end gap-2">
             {/* Save */}
             <button
               onClick={handleSave}
               className="bg-red-600 text-white w-44 py-2 rounded-full text-sm hover:bg-red-700 disabled:opacity-60"
               disabled={isGenerating}
+              hidden={tasks.length === 0}
             >
               Save List
               <Check size={16} className="inline ml-2" />

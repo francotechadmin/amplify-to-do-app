@@ -77,7 +77,11 @@ const TaskList: React.FC<TaskListProps> = ({
       {/* TASKS LIST */}
       <ul className="flex flex-col list-none w-full space-y-2 custom-scrollbar flex-1 min-h-0 overflow-y-auto">
         {tasks.length === 0 && !isLoading ? (
-          <p className="text-gray-500">No tasks added yet.</p>
+          <p className="text-gray-500 h-full text-center flex flex-col items-center justify-center">
+            No tasks added yet.
+            <br />
+            Add a task to get started!
+          </p>
         ) : (
           <div>
             {addingTask && pendingTasks && (
