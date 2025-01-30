@@ -8,7 +8,9 @@ import { generateClient } from "aws-amplify/api";
 import { getUser } from "@/graphql/queries";
 import { createCheckoutSession } from "@/graphql/mutations";
 
-const stripePromise = loadStripe("pk_test_123..."); // replace with your key
+const stripePromise = loadStripe(
+  "pk_test_51QXDiXCS09edeMLjcjsyf3wEmSJxZwNh8gOq1ZAwtBFB1j2sttJ7j167899jmESQyaRpmqLQTRxKEBXnYbDmIPy400LjCSpVHb"
+); // replace with your key
 const client = generateClient({ authMode: "userPool" });
 
 /**
