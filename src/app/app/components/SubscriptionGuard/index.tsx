@@ -31,7 +31,7 @@ const SubscriptionGuard: React.FC<SubscriptionGuardProps> = ({
   if (isCheckingSubscription) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Loader />
+        <Loader color="white" />
       </div>
     );
   }

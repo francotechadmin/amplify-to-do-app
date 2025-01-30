@@ -82,7 +82,13 @@ const SubscriptionModal: FC<SubscriptionModalProps> = ({
             disabled={isCreatingSession}
             onClick={onSubscribe}
           >
-            {isCreatingSession ? <Loader /> : "Subscribe"}
+            {isCreatingSession ? (
+              <div className="flex items-center justify-center">
+                <Loader color="white" />
+              </div>
+            ) : (
+              "Subscribe"
+            )}
           </button>
         </div>
       </div>

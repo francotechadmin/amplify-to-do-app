@@ -2,6 +2,7 @@
 import React from "react";
 import { signOut } from "aws-amplify/auth"; // or wherever your signOut comes from
 import { LogOut, Settings } from "lucide-react";
+import Loader from "../Loader";
 
 interface SettingsModalProps {
   open: boolean;
@@ -9,6 +10,7 @@ interface SettingsModalProps {
   subscriptionStatus?: "active" | "inactive" | null;
   onSubscribe: () => void;
   onManageSubscription: () => void;
+  isSubscribing?: boolean;
 }
 
 /**
@@ -21,6 +23,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   subscriptionStatus,
   onSubscribe,
   onManageSubscription,
+  isSubscribing,
 }) => {
   if (!open) return null; // don't render if closed
 
@@ -49,7 +52,13 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
               onClose(); // optionally close after they pick Subscribe
             }}
           >
-            Subscribe to AI features ✨
+            {isSubscribing ? (
+              <div className="flex items-center justify-center gap-2">
+                <Loader color="red" />
+              </div>
+            ) : (
+              "Subscribe to AI features ✨"
+            )}
           </button>
         ) : (
           <button

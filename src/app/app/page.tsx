@@ -13,6 +13,7 @@ import Footer from "./components/Footer";
 import TaskList from "./components/TaskList";
 import WelcomeModal from "./components/WelcomeModal";
 import SubscriptionGuard from "./components/SubscriptionGuard";
+import { useSubscription } from "../hooks/useSubscriptionStatus";
 
 // GraphQL queries and mutations
 import {
@@ -262,6 +263,13 @@ function Home() {
     }
   };
 
+  const { handleSubscribe, isCreatingSession } = useSubscription();
+
+  // handleSubscribe is called from the SubscriptionGuard component
+  const onSubscribe = async () => {
+    await handleSubscribe();
+  };
+
   // Ensure the user record exists on mount
   useEffect(() => {
     handleCreateUser(setShowWelcomeModal);
@@ -277,8 +285,8 @@ function Home() {
       {showWelcomeModal && (
         <WelcomeModal
           onClose={() => setShowWelcomeModal(false)}
-          onSubscribe={() => setShowWelcomeModal(false)} // On subscription logic
-          isCreatingSession={false}
+          onSubscribe={onSubscribe}
+          isCreatingSession={isCreatingSession}
         />
       )}
 

@@ -14,7 +14,7 @@ const NavBar: React.FC = () => {
     isCreatingSession,
   } = useSubscription();
 
-  if (isCheckingSubscription) return <Loader />;
+  if (isCheckingSubscription) return <Loader color="red" />;
 
   return (
     <nav className="flex items-center justify-between w-full px-6 py-4 text-white">
@@ -39,6 +39,7 @@ const NavBar: React.FC = () => {
         }
         onSubscribe={() => handleSubscribe()}
         onManageSubscription={() => {}}
+        isSubscribing={isCreatingSession}
       />
     </nav>
   );
