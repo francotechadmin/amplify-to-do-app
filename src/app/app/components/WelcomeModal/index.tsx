@@ -23,7 +23,7 @@ const WelcomeModal: FC<WelcomeModalProps> = ({
       {/* The inner container for the modal content. 
           We stop propagation so clicks here don’t close the modal. */}
       <div
-        className="relative bg-gray-800 text-white p-6 rounded-lg shadow-lg max-w-sm w-full flex flex-col md:flex-row gap-8"
+        className="relative bg-gray-800 text-white p-6 rounded-lg shadow-lg max-w-sm w-full flex flex-col items-center gap-8"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button (X) in top-right corner */}
@@ -51,7 +51,7 @@ const WelcomeModal: FC<WelcomeModalProps> = ({
         </div>
 
         {/* RIGHT COLUMN: Premium AI Features */}
-        <div className="md:w-1/3 flex flex-col justify-center items-center gap-4">
+        <div className="flex flex-col justify-center items-center gap-4">
           <h3 className="text-xl font-semibold">Unlock AI Features</h3>
           <p className="text-gray-300 text-center">
             Upgrade to our pro plan for AI-powered list creation. It's only $1

@@ -47,7 +47,7 @@ async function createCheckout() {
     query: createCheckoutSession,
     variables: {
       input: {
-        planId: "price_1QXDnXCS09edeMLj3ARwc1kP", // your plan ID
+        planId: "price_1Qn0AFCS09edeMLjiUnUb75L", // your plan ID
         userId,
         email,
       },

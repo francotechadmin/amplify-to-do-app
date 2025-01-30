@@ -24,7 +24,7 @@
         "createCheckoutSession": {
           "secretsPathAmplifyAppId": "ds5im9z8tc6j1",
           "deploymentBucketName": "amplify-tododemo-dev-0ab6c-deployment",
-          "s3Key": "amplify-builds/createCheckoutSession-36725678646279765143-build.zip",
+          "s3Key": "amplify-builds/createCheckoutSession-6b54344c46657169664f-build.zip",
           "stripeSuccessUrl": "http://localhost:3000/app",
           "stripeCancelUrl": "http://localhost:3000/app"
         },
@@ -36,7 +36,7 @@
         "generateAiTodos": {
           "secretsPathAmplifyAppId": "ds5im9z8tc6j1",
           "deploymentBucketName": "amplify-tododemo-dev-0ab6c-deployment",
-          "s3Key": "amplify-builds/generateAiTodos-547a6464562f6e534a57-build.zip"
+          "s3Key": "amplify-builds/generateAiTodos-466c6b2b4b694f597a6c-build.zip"
         }
       }
     }

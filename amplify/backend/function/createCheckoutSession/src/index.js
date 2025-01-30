@@ -45,6 +45,11 @@ exports.handler = async (event) => {
       metadata: {
         userId: userId,
       },
+      subscription_data: {
+        metadata: {
+          userId: userId,
+        },
+      },
       customer_email: email,
       success_url: process.env.STRIPE_SUCCESS_URL,
       cancel_url: process.env.STRIPE_CANCEL_URL,

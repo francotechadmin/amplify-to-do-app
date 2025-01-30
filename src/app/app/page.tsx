@@ -21,12 +21,11 @@ import {
   createTodo,
   deleteTodo,
   updateTodo,
-  generateAiTodos,
 } from "@/graphql/mutations";
 import { getUser, listTodos } from "@/graphql/queries";
 
 // Configure Amplify
-const libraryOptions = { ssr: true };
+const libraryOptions = { ssr: false };
 Amplify.configure({ ...config, ...libraryOptions });
 
 const client = generateClient({ authMode: "userPool" });
