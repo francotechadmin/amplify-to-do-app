@@ -11,6 +11,7 @@ interface SettingsModalProps {
   onSubscribe: () => void;
   onManageSubscription: () => void;
   isSubscribing?: boolean;
+  isLoading?: boolean;
 }
 
 /**
@@ -24,6 +25,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   onSubscribe,
   onManageSubscription,
   isSubscribing,
+  isLoading,
 }) => {
   if (!open) return null; // don't render if closed
 
@@ -52,7 +54,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
               onClose(); // optionally close after they pick Subscribe
             }}
           >
-            {isSubscribing ? (
+            {isSubscribing || isLoading ? (
               <div className="flex items-center justify-center gap-2">
                 <Loader color="red" />
               </div>
