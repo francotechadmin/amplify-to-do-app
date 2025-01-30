@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { signOut } from "aws-amplify/auth"; // or wherever your signOut comes from
-import { LogOut, Settings } from "lucide-react";
+import { ExternalLink, LogOut, Settings } from "lucide-react";
 import Loader from "../Loader";
 
 interface SettingsModalProps {
@@ -62,13 +62,14 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
           </button>
         ) : (
           <button
-            className="w-full bg-white hover:opacity-75 text-red-600 py-2 px-4 rounded-full mb-2"
+            className="w-full bg-white hover:opacity-75 text-red-600 py-2 px-4 rounded-full mb-2 flex items-center justify-center"
             onClick={() => {
               onManageSubscription();
               onClose(); // optionally close after they pick Manage
             }}
           >
             Manage Subscription
+            <ExternalLink size={16} className="inline ml-1" />
           </button>
         )}
 

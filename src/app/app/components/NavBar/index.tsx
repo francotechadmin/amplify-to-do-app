@@ -14,6 +14,14 @@ const NavBar: React.FC = () => {
     isCreatingSession,
   } = useSubscription();
 
+  // Manage subscriptions using Stripe Customer Portal
+  const onManageSubscription = () => {
+    window.open(
+      "https://billing.stripe.com/p/login/test_14k00pcEGbT8dGw3cc",
+      "_blank"
+    );
+  };
+
   if (isCheckingSubscription) return <Loader color="red" />;
 
   return (
@@ -38,7 +46,7 @@ const NavBar: React.FC = () => {
           subscriptionStatus === "active" ? "active" : "inactive"
         }
         onSubscribe={() => handleSubscribe()}
-        onManageSubscription={() => {}}
+        onManageSubscription={onManageSubscription}
         isSubscribing={isCreatingSession}
       />
     </nav>
