@@ -20,6 +20,7 @@ import {
   createTodo,
   deleteTodo,
   updateTodo,
+  generateAiTodos,
 } from "@/graphql/mutations";
 import { getUser, listTodos } from "@/graphql/queries";
 
@@ -164,6 +165,7 @@ function Home() {
 
   // 2) Add Task
   const {
+    mutateAsync: addTaskAsync,
     mutate: handleAddTask,
     isPending: addingTask,
     variables,
@@ -211,17 +213,18 @@ function Home() {
   });
 
   // 5) Clear All
-  const { mutate: handleClearTasks } = useMutation({
-    mutationFn: clearTasks,
-    onSuccess: () => console.log("All tasks removed successfully!"),
-    onError: (error) => console.error("Error removing all tasks:", error),
-    onMutate: () => {
-      // Optimistically update the UI
-      queryClient.setQueryData(["tasks"], []);
-    },
-    onSettled: async () =>
-      await queryClient.invalidateQueries({ queryKey: ["tasks"] }),
-  });
+  const { mutateAsync: clearTasksAsync, mutate: handleClearTasks } =
+    useMutation({
+      mutationFn: clearTasks,
+      onSuccess: () => console.log("All tasks removed successfully!"),
+      onError: (error) => console.error("Error removing all tasks:", error),
+      onMutate: () => {
+        // Optimistically update the UI
+        queryClient.setQueryData(["tasks"], []);
+      },
+      onSettled: async () =>
+        await queryClient.invalidateQueries({ queryKey: ["tasks"] }),
+    });
 
   // 6) Toggle Task Completion
   const { mutate: handleToggleComplete } = useMutation({
@@ -240,6 +243,24 @@ function Home() {
     onSettled: async () =>
       await queryClient.invalidateQueries({ queryKey: ["tasks"] }),
   });
+
+  // 7) On Save AI Tasks
+  const onSaveAiTasks = async (tasks: { id: string; content: string }[]) => {
+    console.log("Replacing tasks with AI tasks...", tasks);
+    try {
+      // Clear existing tasks
+      await clearTasksAsync();
+
+      // Add each new task in reverse sequence
+      for (let i = tasks.length - 1; i >= 0; i--) {
+        await addTaskAsync(tasks[i].content);
+      }
+
+      console.log("All tasks saved!");
+    } catch (err) {
+      console.error("Error replacing tasks with AI tasks:", err);
+    }
+  };
 
   // Ensure the user record exists on mount
   useEffect(() => {
@@ -281,6 +302,7 @@ function Home() {
                 ?.isCompleted,
             })
           }
+          onSaveAiTasks={onSaveAiTasks}
         />
       </div>
 
