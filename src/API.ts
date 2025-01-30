@@ -161,6 +161,16 @@ export type DeleteUserInput = {
   id: string,
 };
 
+export type GenerateAiTodosInput = {
+  userId: string,
+  prompt: string,
+};
+
+export type GeneratedTasksPayload = {
+  __typename: "GeneratedTasksPayload",
+  tasks?: Array< string | null > | null,
+};
+
 export type ModelTodoFilterInput = {
   id?: ModelIDInput | null,
   content?: ModelStringInput | null,
@@ -370,6 +380,17 @@ export type DeleteUserMutation = {
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
+  } | null,
+};
+
+export type GenerateAiTodosMutationVariables = {
+  input: GenerateAiTodosInput,
+};
+
+export type GenerateAiTodosMutation = {
+  generateAiTodos?:  {
+    __typename: "GeneratedTasksPayload",
+    tasks?: Array< string | null > | null,
   } | null,
 };
 

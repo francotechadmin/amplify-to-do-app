@@ -84,6 +84,12 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "generateAiTodos": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "stripeWebhook": {
       "build": true,
       "dependsOn": [
@@ -139,6 +145,30 @@
         {
           "category": "function",
           "resourceName": "createCheckoutSession"
+        }
+      ]
+    },
+    "AMPLIFY_function_generateAiTodos_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "generateAiTodos"
+        }
+      ]
+    },
+    "AMPLIFY_function_generateAiTodos_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "generateAiTodos"
+        }
+      ]
+    },
+    "AMPLIFY_function_generateAiTodos_secretsPathAmplifyAppId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "generateAiTodos"
         }
       ]
     },

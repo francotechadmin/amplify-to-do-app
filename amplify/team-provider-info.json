@@ -32,6 +32,11 @@
           "secretsPathAmplifyAppId": "ds5im9z8tc6j1",
           "deploymentBucketName": "amplify-tododemo-dev-0ab6c-deployment",
           "s3Key": "amplify-builds/stripeWebhook-456c474a486e69754436-build.zip"
+        },
+        "generateAiTodos": {
+          "secretsPathAmplifyAppId": "ds5im9z8tc6j1",
+          "deploymentBucketName": "amplify-tododemo-dev-0ab6c-deployment",
+          "s3Key": "amplify-builds/generateAiTodos-57726163575747516268-build.zip"
         }
       }
     }

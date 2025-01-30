@@ -37,11 +37,10 @@ input UpdateUserSubscriptionInput {
   subscriptionStatus: String!
 }
 
-# createTodoWithSubscriptionCheck(input: CreateTodoInput!): Todo
-#   @function(name: "createTodoWithSubscriptionCheck-${env}")
 type Mutation {
-  # updateUserSubscriptionStatus(input: UpdateUserSubscriptionInput!): User
-  #   @auth(rules: [{ allow: public, provider: iam }])
+  generateAiTodos(input: GenerateAiTodosInput!): GeneratedTasksPayload
+    @function(name: "generateAiTodos-${env}")
+    @auth(rules: [{ allow: private }])
   createCheckoutSession(input: CreateCheckoutSessionInput!): CheckoutSession
     @function(name: "createCheckoutSession-${env}")
 }
@@ -54,4 +53,14 @@ input CreateCheckoutSessionInput {
 
 type CheckoutSession {
   id: String!
+}
+
+input GenerateAiTodosInput {
+  userId: ID!
+  prompt: String!
+}
+
+# Returns array of strings
+type GeneratedTasksPayload {
+  tasks: [String]
 }

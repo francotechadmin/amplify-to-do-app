@@ -138,3 +138,13 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
   APITypes.DeleteUserMutationVariables,
   APITypes.DeleteUserMutation
 >;
+export const generateAiTodos = /* GraphQL */ `mutation GenerateAiTodos($input: GenerateAiTodosInput!) {
+  generateAiTodos(input: $input) {
+    tasks
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.GenerateAiTodosMutationVariables,
+  APITypes.GenerateAiTodosMutation
+>;
