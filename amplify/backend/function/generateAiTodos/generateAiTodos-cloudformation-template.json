@@ -18,6 +18,18 @@
     },
     "secretsPathAmplifyAppId": {
       "Type": "String"
+    },
+    "apitododemoGraphQLAPIIdOutput": {
+      "Type": "String",
+      "Default": "apitododemoGraphQLAPIIdOutput"
+    },
+    "apitododemoGraphQLAPIEndpointOutput": {
+      "Type": "String",
+      "Default": "apitododemoGraphQLAPIEndpointOutput"
+    },
+    "apitododemoGraphQLAPIKeyOutput": {
+      "Type": "String",
+      "Default": "apitododemoGraphQLAPIKeyOutput"
     }
   },
   "Conditions": {
@@ -94,6 +106,15 @@
                   "OPENAI_API_KEY"
                 ]
               ]
+            },
+            "API_TODODEMO_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apitododemoGraphQLAPIIdOutput"
+            },
+            "API_TODODEMO_GRAPHQLAPIENDPOINTOUTPUT": {
+              "Ref": "apitododemoGraphQLAPIEndpointOutput"
+            },
+            "API_TODODEMO_GRAPHQLAPIKEYOUTPUT": {
+              "Ref": "apitododemoGraphQLAPIKeyOutput"
             }
           }
         },
@@ -246,6 +267,53 @@
       "DependsOn": [
         "LambdaExecutionRole"
       ]
+    },
+    "AmplifyResourcesPolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "amplify-lambda-execution-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "appsync:GraphQL"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:appsync:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apis/",
+                      {
+                        "Ref": "apitododemoGraphQLAPIIdOutput"
+                      },
+                      "/types/Query/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
     }
   },
   "Outputs": {

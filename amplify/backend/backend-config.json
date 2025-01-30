@@ -86,7 +86,17 @@
     },
     "generateAiTodos": {
       "build": true,
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput",
+            "GraphQLAPIEndpointOutput",
+            "GraphQLAPIKeyOutput"
+          ],
+          "category": "api",
+          "resourceName": "tododemo"
+        }
+      ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },

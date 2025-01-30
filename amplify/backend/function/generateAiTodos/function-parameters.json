@@ -2,5 +2,12 @@
   "lambdaLayers": [],
   "secretNames": [
     "OPENAI_API_KEY"
-  ]
+  ],
+  "permissions": {
+    "api": {
+      "tododemo": [
+        "Query"
+      ]
+    }
+  }
 }

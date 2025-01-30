@@ -16,7 +16,7 @@ type User
   @auth(
     rules: [
       { allow: owner, operations: [create, read] }
-      { allow: public, provider: iam, operations: [update] }
+      { allow: public, provider: iam, operations: [read, update] }
     ]
   ) {
   id: ID!
