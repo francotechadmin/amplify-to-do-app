@@ -9,7 +9,7 @@ import { getUser } from "@/graphql/queries";
 import { createCheckoutSession } from "@/graphql/mutations";
 
 const stripePromise = loadStripe(
-  "pk_test_51QXDiXCS09edeMLjcjsyf3wEmSJxZwNh8gOq1ZAwtBFB1j2sttJ7j167899jmESQyaRpmqLQTRxKEBXnYbDmIPy400LjCSpVHb"
+  "pk_live_51QXDiXCS09edeMLjE4XQUcBEUvkq91tPgbyzjVm5I12mG1l8i3eAaHetTzb5iuDsyHPpx1mocaJlKykqfNPp76dG00BnoFGQ0H"
 ); // replace with your key
 const client = generateClient({ authMode: "userPool" });
 
@@ -47,7 +47,7 @@ async function createCheckout() {
     query: createCheckoutSession,
     variables: {
       input: {
-        planId: "price_1Qn0AFCS09edeMLjiUnUb75L", // your plan ID
+        planId: "price_1Qn0mZCS09edeMLjrPpKagrm", // your plan ID
         userId,
         email,
       },
