@@ -69,7 +69,6 @@ const SubscriptionModal: FC<SubscriptionModalProps> = ({
 
           <div className="flex items-start gap-2 text-red-700">
             <span className="text-4xl">$1</span>
-            <span className="text-xl">99</span>
             <span className="text-4xl">|</span>
             <div className="flex flex-col items-start">
               <span className="text-md m-0 p-0">PER</span>
