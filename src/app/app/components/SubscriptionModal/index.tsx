@@ -1,50 +1,89 @@
 import React, { FC } from "react";
-import Loader from "../Loader"; // or wherever your Loader component is
+import Loader from "../Loader";
+import { Circle } from "lucide-react";
 
 interface SubscriptionModalProps {
+  open: boolean;
   onSubscribe: () => void;
+  onClose: () => void;
   isCreatingSession: boolean;
 }
 
 const SubscriptionModal: FC<SubscriptionModalProps> = ({
   onSubscribe,
+  onClose,
   isCreatingSession,
 }) => {
-  return (
-    // Fullscreen overlay (dark, slightly transparent), centered content
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm">
-      {/* The modal container */}
-      <div className="bg-gray-900 text-white p-8 rounded-lg shadow-lg max-w-3xl w-full flex flex-col md:flex-row gap-8">
-        {/* Left column: subscription details */}
-        <div className="flex-1 flex flex-col gap-4">
-          <h2 className="text-2xl font-semibold">Unlock Premium Features</h2>
-          <p className="text-gray-300">
-            Subscribe to our premium plan to gain full access to advanced
-            features, priority support, and more. Your support helps us continue
-            building great tools!
-          </p>
-          <div className="mt-2">
-            <p className="text-xl">
-              <strong className="text-blue-400">$9.99/month</strong>
-            </p>
-            <p className="text-sm text-gray-400 mt-1">
-              You can cancel anytime in your account settings.
-            </p>
-          </div>
-        </div>
+  if (!open) return null; // don't render if closed
 
-        {/* Right column: call-to-action */}
-        <div className="w-full md:w-1/3 flex flex-col items-center justify-center gap-4">
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="bg-gray-800 text-white p-6 rounded-2xl shadow-xl max-w-md w-full mx-4 relative max-w-xs"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+
+        {/* Modal content */}
+        <div className="space-y-6 flex flex-col items-center justify-center">
+          <h2 className="text-4xl font-bold">
+            Subscribe to Generate Lists Using AI ✨
+          </h2>
+
+          <div>
+            <div className=" px-4 rounded-lg flex items-center gap-2">
+              <Circle size={14} />{" "}
+              <span className="font-medium">AI List Generation</span>
+            </div>
+            <div className=" px-4 rounded-lg flex items-center gap-2">
+              <Circle size={14} />
+              <span className="font-medium">1M Tokens</span>
+            </div>
+            <div className="px-4 rounded-lg flex items-center gap-2">
+              <Circle size={14} />{" "}
+              <span className="font-medium">Unlimited Support</span>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-2 text-red-700">
+            <span className="text-4xl">$1</span>
+            <span className="text-xl">99</span>
+            <span className="text-4xl">|</span>
+            <div className="flex flex-col items-start">
+              <span className="text-md m-0 p-0">PER</span>
+              <span className="text-md m-0 p-0">MONTH</span>
+            </div>
+          </div>
+
           <button
-            className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md w-full text-center"
+            className="w-1/2 py-4 bg-red-700 hover:bg-red-800 rounded-full font-bold transition-colors"
             disabled={isCreatingSession}
             onClick={onSubscribe}
           >
-            {isCreatingSession ? <Loader /> : "Subscribe Now"}
+            {isCreatingSession ? <Loader /> : "Subscribe"}
           </button>
-          <p className="text-sm text-gray-400">
-            Your subscription will renew monthly until canceled.
-          </p>
         </div>
       </div>
     </div>

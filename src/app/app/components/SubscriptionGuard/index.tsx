@@ -68,9 +68,13 @@ const createCheckout = async () => {
 
 interface SubscriptionGuardProps {
   children: ReactNode;
+  onClose: () => void;
 }
 
-const SubscriptionGuard: React.FC<SubscriptionGuardProps> = ({ children }) => {
+const SubscriptionGuard: React.FC<SubscriptionGuardProps> = ({
+  children,
+  onClose,
+}) => {
   // Track whether the modal is open
   const [isModalOpen, setIsModalOpen] = useState(true);
 
@@ -93,12 +97,18 @@ const SubscriptionGuard: React.FC<SubscriptionGuardProps> = ({ children }) => {
     mutationFn: createCheckout,
   });
 
+  // Handle closing the modal
+  const handleClose = () => {
+    setIsModalOpen(false);
+    onClose();
+  };
+
   // Show the modal if the subscription is not active
   useEffect(() => {
-    if (subscriptionStatus && subscriptionStatus !== "active") {
-      setIsModalOpen(true);
-    } else {
+    if (subscriptionStatus && subscriptionStatus == "active") {
       setIsModalOpen(false);
+    } else {
+      setIsModalOpen(true);
     }
   }, [subscriptionStatus]);
 
@@ -125,16 +135,21 @@ const SubscriptionGuard: React.FC<SubscriptionGuardProps> = ({ children }) => {
     console.error("Error creating checkout session:", createCheckoutError);
   }
 
+  if (subscriptionStatus && subscriptionStatus == "inactive") {
+    return <>{children}</>;
+  }
+
   // RENDER:
   //  - The child content (so the page is loaded behind the overlay)
   //  - The subscription modal if user is not active
   return (
     <>
-      {children}
       {isModalOpen && (
         <SubscriptionModal
           onSubscribe={() => handleSubscribe()}
           isCreatingSession={isCreatingSession}
+          open={isModalOpen}
+          onClose={() => handleClose()}
         />
       )}
     </>
