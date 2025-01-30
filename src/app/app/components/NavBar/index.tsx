@@ -23,7 +23,7 @@ const NavBar: React.FC = () => {
   };
 
   return (
-    <nav className="flex items-center justify-between w-full px-6 py-4 text-white">
+    <nav className="flex items-center justify-between w-full px-2 py-4 text-white">
       {/* <div style={{ width: "20px" }}></div> */}
       <div className="text-3xl font-bold flex items-center gap-2">
         To-Do List <PenLine size={28} />

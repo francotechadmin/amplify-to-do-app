@@ -51,7 +51,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
             className="w-full bg-white hover:opacity-75 text-red-600 py-2 px-4 rounded-full mb-2"
             onClick={() => {
               onSubscribe();
-              onClose(); // optionally close after they pick Subscribe
             }}
           >
             {isSubscribing || isLoading ? (
