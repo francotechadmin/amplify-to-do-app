@@ -10,19 +10,16 @@ import { createCheckoutSession } from "@/graphql/mutations";
 
 const stripePromise = loadStripe(
   "pk_live_51QXDiXCS09edeMLjE4XQUcBEUvkq91tPgbyzjVm5I12mG1l8i3eAaHetTzb5iuDsyHPpx1mocaJlKykqfNPp76dG00BnoFGQ0H"
-); // replace with your key
+);
+
 const client = generateClient({ authMode: "userPool" });
 
 /**
- * 1) Fetch subscription status for the current user.
+ * Fetch subscription status for the current user.
  */
 async function fetchSubscriptionStatus() {
   const user = await getCurrentUser();
-  const userAttributes = await fetchUserAttributes();
   const userId = user.username;
-
-  // Just in case you want the email for something else:
-  // const email = userAttributes.email;
 
   const response = await client.graphql({
     query: getUser,
@@ -42,12 +39,11 @@ async function createCheckout() {
   const userId = user.username;
   const email = userAttributes.email || "";
 
-  // Call your custom mutation to create the checkout session
   const response = await client.graphql({
     query: createCheckoutSession,
     variables: {
       input: {
-        planId: "price_1Qn0mZCS09edeMLjrPpKagrm", // your plan ID
+        planId: "price_1Qn0mZCS09edeMLjrPpKagrm",
         userId,
         email,
       },
