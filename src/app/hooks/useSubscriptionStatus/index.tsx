@@ -8,9 +8,11 @@ import { generateClient } from "aws-amplify/api";
 import { getUser } from "@/graphql/queries";
 import { createCheckoutSession } from "@/graphql/mutations";
 
-const stripePromise = loadStripe(
-  "pk_live_51QXDiXCS09edeMLjE4XQUcBEUvkq91tPgbyzjVm5I12mG1l8i3eAaHetTzb5iuDsyHPpx1mocaJlKykqfNPp76dG00BnoFGQ0H"
-);
+// look at url in browser console to see if it's in production or development
+const stripeKey = process.env.NEXT_PUBLIC_STRIPE_KEY;
+
+// Load Stripe.js
+const stripePromise = loadStripe(stripeKey!);
 
 const client = generateClient({ authMode: "userPool" });
 
@@ -39,11 +41,13 @@ async function createCheckout() {
   const userId = user.username;
   const email = userAttributes.email || "";
 
+  const priceId = process.env.NEXT_PUBLIC_STRIPE_PRICE_ID;
+
   const response = await client.graphql({
     query: createCheckoutSession,
     variables: {
       input: {
-        planId: "price_1Qn0mZCS09edeMLjrPpKagrm",
+        planId: priceId ?? "",
         userId,
         email,
       },

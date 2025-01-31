@@ -9,10 +9,8 @@ import { withAuthenticator } from "@aws-amplify/ui-react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import NavBar from "./components/NavBar";
-import Footer from "./components/Footer";
 import TaskList from "./components/TaskList";
 import WelcomeModal from "./components/WelcomeModal";
-import SubscriptionGuard from "./components/SubscriptionGuard";
 import { useSubscription } from "./hooks/useSubscriptionStatus";
 
 // GraphQL queries and mutations
