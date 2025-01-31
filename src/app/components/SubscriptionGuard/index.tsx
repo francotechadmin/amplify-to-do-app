@@ -17,17 +17,28 @@ const SubscriptionGuard: React.FC<SubscriptionGuardProps> = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 1) Use our custom hook
+  // Check subscription status
   const {
     subscriptionStatus,
     isCheckingSubscription,
     subscriptionError,
     handleSubscribe,
     isCreatingSession,
-    createCheckoutError,
   } = useSubscription();
 
-  // 2) If we're still checking subscription, show a loader
+  useEffect(() => {
+    if (subscriptionStatus === "active") {
+      setIsModalOpen(false);
+    } else {
+      setIsModalOpen(true);
+    }
+  }, [subscriptionStatus]);
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+    onClose();
+  };
+
   if (isCheckingSubscription) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -36,7 +47,6 @@ const SubscriptionGuard: React.FC<SubscriptionGuardProps> = ({
     );
   }
 
-  // If there's an error checking subscription, handle it (optional)
   if (subscriptionError) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -47,32 +57,12 @@ const SubscriptionGuard: React.FC<SubscriptionGuardProps> = ({
     );
   }
 
-  // If there's an error creating the checkout session, you can log or show a warning
-  if (createCheckoutError) {
-    console.error("Error creating checkout session:", createCheckoutError);
-  }
-
-  // 3) Decide whether to show the modal or not
-  useEffect(() => {
-    if (subscriptionStatus === "active") {
-      setIsModalOpen(false);
-    } else {
-      setIsModalOpen(true);
-    }
-  }, [subscriptionStatus]);
-
-  // 4) Close handler
-  const handleClose = () => {
-    setIsModalOpen(false);
-    onClose();
-  };
-
   // If subscription is active, just render the children
   if (subscriptionStatus === "active") {
     return <>{children}</>;
   }
 
-  // Otherwise, show the modal (and optionally render children behind an overlay)
+  // Otherwise, show the modal to prompt the user to subscribe
   return (
     <>
       {isModalOpen && (

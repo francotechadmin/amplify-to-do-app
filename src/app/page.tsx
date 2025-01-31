@@ -123,10 +123,16 @@ const fetchUser = async (userId: string) => {
 };
 
 const createUserMutation = async (userId: string) => {
-  const response = await client.graphql({
-    query: createUser,
-    variables: { input: { id: userId, subscriptionStatus: "inactive" } },
-  });
+  let response;
+  try {
+    response = await client.graphql({
+      query: createUser,
+      variables: { input: { id: userId, subscriptionStatus: "inactive" } },
+    });
+  } catch (error) {
+    console.error("Error creating user:", error);
+    return null;
+  }
   return response.data.createUser.id;
 };
 
@@ -271,7 +277,6 @@ function Home() {
   useEffect(() => {
     handleCreateUser(setShowWelcomeModal);
   }, []);
-  console.log(`Tasks (${tasks.length}):`, tasks);
 
   return (
     <div className="flex flex-col justify-center flex-1 min-h-0 p-4 w-full max-w-4xl">

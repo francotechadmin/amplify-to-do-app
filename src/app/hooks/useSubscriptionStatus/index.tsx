@@ -28,7 +28,7 @@ async function fetchSubscriptionStatus() {
     variables: { id: userId },
   });
 
-  return response.data.getUser?.subscriptionStatus;
+  return response.data.getUser?.subscriptionStatus ?? null;
 }
 
 /**
