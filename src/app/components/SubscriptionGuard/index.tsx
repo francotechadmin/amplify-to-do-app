@@ -4,7 +4,7 @@
 import React, { ReactNode, useState, useEffect } from "react";
 import SubscriptionModal from "../SubscriptionModal";
 import Loader from "../Loader";
-import { useSubscription } from "../../../hooks/useSubscriptionStatus";
+import { useSubscription } from "../../hooks/useSubscriptionStatus";
 
 interface SubscriptionGuardProps {
   children: ReactNode;
