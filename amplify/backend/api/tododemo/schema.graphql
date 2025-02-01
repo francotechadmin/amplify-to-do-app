@@ -7,7 +7,7 @@ type Todo @model @auth(rules: [{ allow: owner }]) {
   isCompleted: Boolean!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
-  userID: ID! # The field storing the user's ID
+  userID: ID! @index(name: "byUser", sortKeyFields: ["createdAt"])
 }
 
 type User

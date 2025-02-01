@@ -74,6 +74,9 @@
             "REGION": {
               "Ref": "AWS::Region"
             },
+            "API_TODODEMO_GRAPHQLAPIIDOUTPUT": {
+              "Ref": "apitododemoGraphQLAPIIdOutput"
+            },
             "API_TODODEMO_TODOTABLE_NAME": {
               "Fn::ImportValue": {
                 "Fn::Sub": "${apitododemoGraphQLAPIIdOutput}:GetAtt:TodoTable:Name"
@@ -99,9 +102,6 @@
                   }
                 ]
               ]
-            },
-            "API_TODODEMO_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apitododemoGraphQLAPIIdOutput"
             }
           }
         },

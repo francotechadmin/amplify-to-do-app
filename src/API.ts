@@ -185,6 +185,22 @@ export type ModelTodoFilterInput = {
   owner?: ModelStringInput | null,
 };
 
+export type ModelStringKeyConditionInput = {
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+};
+
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+
 export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
   subscriptionStatus?: ModelStringInput | null,
@@ -453,6 +469,32 @@ export type ListTodosQueryVariables = {
 
 export type ListTodosQuery = {
   listTodos?:  {
+    __typename: "ModelTodoConnection",
+    items:  Array< {
+      __typename: "Todo",
+      id: string,
+      content: string,
+      isCompleted: boolean,
+      createdAt: string,
+      updatedAt: string,
+      userID: string,
+      owner?: string | null,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type TodosByUserIDAndCreatedAtQueryVariables = {
+  userID: string,
+  createdAt?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelTodoFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type TodosByUserIDAndCreatedAtQuery = {
+  todosByUserIDAndCreatedAt?:  {
     __typename: "ModelTodoConnection",
     items:  Array< {
       __typename: "Todo",

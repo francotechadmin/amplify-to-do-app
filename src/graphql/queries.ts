@@ -42,6 +42,40 @@ export const listTodos = /* GraphQL */ `query ListTodos(
   }
 }
 ` as GeneratedQuery<APITypes.ListTodosQueryVariables, APITypes.ListTodosQuery>;
+export const todosByUserIDAndCreatedAt = /* GraphQL */ `query TodosByUserIDAndCreatedAt(
+  $userID: ID!
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelTodoFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  todosByUserIDAndCreatedAt(
+    userID: $userID
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      content
+      isCompleted
+      createdAt
+      updatedAt
+      userID
+      owner
+      __typename
+    }
+    nextToken
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.TodosByUserIDAndCreatedAtQueryVariables,
+  APITypes.TodosByUserIDAndCreatedAtQuery
+>;
 export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
   getUser(id: $id) {
     id

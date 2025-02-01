@@ -1,4 +1,10 @@
-const AWS = require("aws-sdk");
+/* Amplify Params - DO NOT EDIT
+	API_TODODEMO_GRAPHQLAPIIDOUTPUT
+	API_TODODEMO_TODOTABLE_ARN
+	API_TODODEMO_TODOTABLE_NAME
+	ENV
+	REGION
+Amplify Params - DO NOT EDIT */ const AWS = require("aws-sdk");
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const TABLE_NAME = process.env.API_TODODEMO_TODOTABLE_NAME;
 
@@ -51,8 +57,11 @@ async function clearTodos(userId) {
 
   const params = {
     TableName: TABLE_NAME,
-    KeyConditionExpression: "userId = :userId",
-    ExpressionAttributeValues: { ":userId": userId },
+    IndexName: "byUser",
+    KeyConditionExpression: "userID = :userId",
+    ExpressionAttributeValues: {
+      ":userId": userId,
+    },
   };
 
   try {
