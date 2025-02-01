@@ -34,6 +34,16 @@ const batchCreateTodosQuery = async (tasks: { TaskContent: string }[]) => {
   return response.data.batchCreateTodos;
 };
 
+const clearTasksQuery = async () => {
+  const user = await getCurrentUser();
+  const userId = user.username;
+  const response = await client.graphql({
+    query: clearTodos,
+    variables: {},
+  });
+  return response.data.clearTodos;
+};
+
 export function useMutateTasks() {
   const queryClient = useQueryClient();
   const [pendingTodos, setPendingTodos] = useState<
@@ -125,6 +135,31 @@ export function useMutateTasks() {
     setPendingTodos([...pendingBatchRef.current]);
   };
 
+  // 🚀 **Optimistic Bulk Replace Tasks with new list**
+  const bulkReplaceTasks = async (tasks: { id: string; content: string }[]) => {
+    console.log("Replacing tasks with:", tasks);
+    const optimisticTodos = tasks.map((task) => ({
+      TaskId: `temp-${Date.now()}-${Math.random()}`,
+      TaskContent: task.content,
+      isCompleted: false,
+      createdAt: new Date(),
+      isOptimistic: true,
+    }));
+
+    // Delete existing tasks
+    await clearTasksQuery();
+
+    // Update UI immediately with optimistic todos
+    queryClient.setQueryData(["tasks"], () => optimisticTodos);
+
+    // Add all tasks to pending batch
+    pendingBatchRef.current.push(...optimisticTodos);
+    setPendingTodos([...pendingBatchRef.current]);
+
+    // Trigger batch processing
+    processBatch();
+  };
+
   // 🔥 **Mutations for Updating, Deleting, Toggling**
   const { mutate: editTask } = useMutation({
     mutationFn: async ({
@@ -182,10 +217,7 @@ export function useMutateTasks() {
 
   const { mutate: clearTasks } = useMutation({
     mutationFn: async () => {
-      return await client.graphql({
-        query: clearTodos,
-        variables: {},
-      });
+      return await clearTasksQuery();
     },
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: ["tasks"] });
@@ -197,6 +229,7 @@ export function useMutateTasks() {
 
   return {
     addTask,
+    bulkReplaceTasks,
     editTask,
     removeTask,
     pendingTodos, // Can be used in UI to show "sending..." state

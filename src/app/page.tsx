@@ -22,25 +22,8 @@ Amplify.configure({ ...config, ...libraryOptions });
 function Home() {
   const [showWelcomeModal, setShowWelcomeModal] = useState(false);
   const { data: tasks = [], isLoading } = useFetchTasks();
-  const { addTask, editTask, removeTask, clearTasks } = useMutateTasks();
-
-  // 7) On Save AI Tasks
-  const onSaveAiTasks = async (tasks: { id: string; content: string }[]) => {
-    console.log("Replacing tasks with AI tasks...", tasks);
-    try {
-      // Clear existing tasks
-      await clearTasks();
-
-      // Add each new task in reverse sequence
-      for (let i = tasks.length - 1; i >= 0; i--) {
-        addTask(tasks[i].content);
-      }
-
-      console.log("All tasks saved!");
-    } catch (err) {
-      console.error("Error replacing tasks with AI tasks:", err);
-    }
-  };
+  const { addTask, editTask, removeTask, clearTasks, bulkReplaceTasks } =
+    useMutateTasks();
 
   const { handleSubscribe, isCreatingSession } = useSubscription();
 
@@ -72,7 +55,7 @@ function Home() {
           onEditTask={editTask}
           onRemoveTask={removeTask}
           onClearAll={clearTasks}
-          onSaveAiTasks={onSaveAiTasks}
+          onSaveAiTasks={bulkReplaceTasks}
         />
       </div>
 
