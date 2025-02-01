@@ -7,8 +7,7 @@ type Todo @model @auth(rules: [{ allow: owner }]) {
   isCompleted: Boolean!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
-  # The field storing the user's ID
-  userID: ID!
+  userID: ID! # The field storing the user's ID
 }
 
 type User
@@ -21,28 +20,26 @@ type User
   ) {
   id: ID!
   subscriptionStatus: String! # active, inactive, or null
-  # A user can have many todos
-  todos: [Todo] @hasMany(fields: ["id"])
+  todos: [Todo] @hasMany(fields: ["id"]) # A user can have many todos
 }
-
-# input CreateTodoInput {
-#   id: ID
-#   content: String!
-#   isCompleted: Boolean!
-#   userID: ID!
-# }
-
 input UpdateUserSubscriptionInput {
   id: ID!
   subscriptionStatus: String!
 }
 
 type Mutation {
+  createCheckoutSession(input: CreateCheckoutSessionInput!): CheckoutSession
+    @function(name: "createCheckoutSession-${env}")
   generateAiTodos(input: GenerateAiTodosInput!): GeneratedTasksPayload
     @function(name: "generateAiTodos-${env}")
     @auth(rules: [{ allow: private }])
-  createCheckoutSession(input: CreateCheckoutSessionInput!): CheckoutSession
-    @function(name: "createCheckoutSession-${env}")
+  batchCreateTodos(input: BatchCreateInput!): [Todo]
+    @function(name: "generalTodoResolver-${env}")
+    @auth(rules: [{ allow: private }])
+  # no input or output required
+  clearTodos: [Todo]
+    @function(name: "generalTodoResolver-${env}")
+    @auth(rules: [{ allow: private }])
 }
 
 input CreateCheckoutSessionInput {
@@ -63,4 +60,14 @@ input GenerateAiTodosInput {
 # Returns array of strings
 type GeneratedTasksPayload {
   tasks: [String]
+}
+
+input BatchCreateInput {
+  todos: [CreateTodoInput!]!
+}
+
+input CreateTodoInput {
+  content: String!
+  isCompleted: Boolean!
+  userID: ID!
 }

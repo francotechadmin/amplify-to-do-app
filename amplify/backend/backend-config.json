@@ -84,6 +84,20 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "generalTodoResolver": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "GraphQLAPIIdOutput"
+          ],
+          "category": "api",
+          "resourceName": "tododemo"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "generateAiTodos": {
       "build": true,
       "dependsOn": [
@@ -155,6 +169,22 @@
         {
           "category": "function",
           "resourceName": "createCheckoutSession"
+        }
+      ]
+    },
+    "AMPLIFY_function_generalTodoResolver_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "generalTodoResolver"
+        }
+      ]
+    },
+    "AMPLIFY_function_generalTodoResolver_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "generalTodoResolver"
         }
       ]
     },

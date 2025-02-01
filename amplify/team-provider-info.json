@@ -37,6 +37,10 @@
           "secretsPathAmplifyAppId": "ds5im9z8tc6j1",
           "deploymentBucketName": "amplify-tododemo-dev-0ab6c-deployment",
           "s3Key": "amplify-builds/generateAiTodos-466c6b2b4b694f597a6c-build.zip"
+        },
+        "generalTodoResolver": {
+          "deploymentBucketName": "amplify-tododemo-dev-0ab6c-deployment",
+          "s3Key": "amplify-builds/generalTodoResolver-6336615646594f333359-build.zip"
         }
       }
     }
