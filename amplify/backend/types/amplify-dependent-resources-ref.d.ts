@@ -30,6 +30,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "generalTodoResolver": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "generateAiTodos": {
       "Arn": "string",
       "LambdaExecutionRole": "string",

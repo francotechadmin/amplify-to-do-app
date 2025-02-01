@@ -14,11 +14,8 @@ export type CheckoutSession = {
 };
 
 export type CreateTodoInput = {
-  id?: string | null,
   content: string,
   isCompleted: boolean,
-  createdAt?: string | null,
-  updatedAt?: string | null,
   userID: string,
 };
 
@@ -169,6 +166,10 @@ export type GenerateAiTodosInput = {
 export type GeneratedTasksPayload = {
   __typename: "GeneratedTasksPayload",
   tasks?: Array< string | null > | null,
+};
+
+export type BatchCreateInput = {
+  todos: Array< CreateTodoInput >,
 };
 
 export type ModelTodoFilterInput = {
@@ -392,6 +393,39 @@ export type GenerateAiTodosMutation = {
     __typename: "GeneratedTasksPayload",
     tasks?: Array< string | null > | null,
   } | null,
+};
+
+export type BatchCreateTodosMutationVariables = {
+  input: BatchCreateInput,
+};
+
+export type BatchCreateTodosMutation = {
+  batchCreateTodos?:  Array< {
+    __typename: "Todo",
+    id: string,
+    content: string,
+    isCompleted: boolean,
+    createdAt: string,
+    updatedAt: string,
+    userID: string,
+    owner?: string | null,
+  } | null > | null,
+};
+
+export type ClearTodosMutationVariables = {
+};
+
+export type ClearTodosMutation = {
+  clearTodos?:  Array< {
+    __typename: "Todo",
+    id: string,
+    content: string,
+    isCompleted: boolean,
+    createdAt: string,
+    updatedAt: string,
+    userID: string,
+    owner?: string | null,
+  } | null > | null,
 };
 
 export type GetTodoQueryVariables = {
