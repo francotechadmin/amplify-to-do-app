@@ -12,22 +12,28 @@ export interface Task {
 
 interface TaskItemProps {
   task: Task;
-  onToggleComplete: (taskId: string) => void;
+  onEditTask: (task: {
+    taskId: string;
+    newContent: string;
+    isCompleted: boolean;
+  }) => void;
   onDelete: (taskId: string) => void;
 }
 
-const TaskItem: React.FC<TaskItemProps> = ({
-  task,
-  onToggleComplete,
-  onDelete,
-}) => {
+const TaskItem: React.FC<TaskItemProps> = ({ task, onEditTask, onDelete }) => {
   return (
     <li className="p-2 flex items-center justify-between">
       {/* LEFT: Circle checkbox + task text */}
       <div className="flex items-center gap-3">
         {/* Circle checkbox */}
         <button
-          onClick={() => onToggleComplete(task.TaskId)}
+          onClick={() =>
+            onEditTask({
+              taskId: task.TaskId,
+              newContent: task.TaskContent,
+              isCompleted: !task.isCompleted,
+            })
+          }
           className={`w-5 h-5 rounded-full border-2 flex items-center justify-center 
           }`}
         >

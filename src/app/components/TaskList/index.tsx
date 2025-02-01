@@ -1,32 +1,29 @@
 "use client";
 import React, { useState } from "react";
 import TaskItem, { Task } from "../TaskItem";
-import { Plus, PlusCircle, PlusIcon, Sparkle, Sparkles } from "lucide-react";
+import { PlusCircle, Sparkles } from "lucide-react";
 import AiFeatureModal from "../AIModal";
-import { on } from "events";
 interface TaskListProps {
   tasks: Task[];
-  pendingTasks: string | undefined;
-  addingTask: boolean;
   isLoading: boolean;
   onAddTask: (content: string) => void;
-  onEditTask: (taskId: string, newContent: string) => void;
+  onEditTask: (task: {
+    taskId: string;
+    newContent: string;
+    isCompleted: boolean;
+  }) => void;
   onRemoveTask: (taskId: string) => void;
   onClearAll: () => void;
-  onToggleComplete: (taskId: string) => void;
   onSaveAiTasks: (tasks: { id: string; content: string }[]) => void;
 }
 
 const TaskList: React.FC<TaskListProps> = ({
   tasks,
-  pendingTasks,
-  addingTask,
   isLoading,
   onAddTask,
   onEditTask,
   onRemoveTask,
   onClearAll,
-  onToggleComplete,
   onSaveAiTasks,
 }) => {
   const [newTask, setNewTask] = useState("");
@@ -83,28 +80,14 @@ const TaskList: React.FC<TaskListProps> = ({
             Add a task to get started!
           </p>
         ) : (
-          <div>
-            {addingTask && pendingTasks && (
-              <TaskItem
-                task={{
-                  TaskId: pendingTasks,
-                  TaskContent: pendingTasks,
-                  isCompleted: false,
-                }}
-                onToggleComplete={() => {}}
-                onDelete={() => {}}
-              />
-            )}
-
-            {tasks.map((task) => (
-              <TaskItem
-                key={task.TaskId}
-                task={task}
-                onToggleComplete={onToggleComplete}
-                onDelete={onRemoveTask}
-              />
-            ))}
-          </div>
+          tasks.map((task) => (
+            <TaskItem
+              key={task.TaskId}
+              task={task}
+              onEditTask={onEditTask}
+              onDelete={onRemoveTask}
+            />
+          ))
         )}
       </ul>
       {/* Display hidden edit buttons */}
@@ -115,7 +98,11 @@ const TaskList: React.FC<TaskListProps> = ({
             onClick={() => {
               const newContent = prompt("Edit task", task.TaskContent);
               if (newContent) {
-                onEditTask(task.TaskId, newContent);
+                onEditTask({
+                  taskId: task.TaskId,
+                  newContent,
+                  isCompleted: task.isCompleted || false,
+                });
               }
             }}
           >
