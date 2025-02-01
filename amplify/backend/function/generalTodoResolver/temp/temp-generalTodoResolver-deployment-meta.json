@@ -1,0 +1,16 @@
+{
+  "stackTemplatePathOrUrl": "amplify-cfn-templates/function/temp/temp-generalTodoResolver-cloudformation-template.json",
+  "parameters": {
+    "CloudWatchRule": "NONE",
+    "s3Key": "amplify-builds/generalTodoResolver-4b2b77552f6e6e547233-build.zip",
+    "deploymentBucketName": "amplify-tododemo-dev-0ab6c-deployment",
+    "env": "dev",
+    "apitododemoGraphQLAPIIdOutput": "zrciblw3xvbmnjjbshxblgiqsy"
+  },
+  "stackName": "arn:aws:cloudformation:us-east-2:905418088317:stack/amplify-tododemo-dev-0ab6c-functiongeneralTodoResolver-D6J73TPTZRTD/06aa6e70-e021-11ef-86a7-0a030234fd53",
+  "capabilities": [
+    "CAPABILITY_NAMED_IAM",
+    "CAPABILITY_AUTO_EXPAND"
+  ],
+  "tableNames": []
+}

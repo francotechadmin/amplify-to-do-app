@@ -40,7 +40,7 @@
         },
         "generalTodoResolver": {
           "deploymentBucketName": "amplify-tododemo-dev-0ab6c-deployment",
-          "s3Key": "amplify-builds/generalTodoResolver-6336615646594f333359-build.zip"
+          "s3Key": "amplify-builds/generalTodoResolver-4b2b77552f6e6e547233-build.zip"
         }
       }
     }
