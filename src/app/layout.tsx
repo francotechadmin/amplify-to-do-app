@@ -25,11 +25,11 @@ export default function RootLayout({
 }>) {
   return (
     <ReactQueryProvider>
-      <html lang="en" className="h-[100dvh] m-0">
+      <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#10121E] w-screen h-[100dvh]  m-0`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#10121E] w-screen m-0 min-h-[100dvh]`}
         >
-          <main className="flex flex-col items-center w-full h-[100dvh]">
+          <main className="flex flex-col items-center w-full min-h-[100dvh]">
             {children}
           </main>
         </body>

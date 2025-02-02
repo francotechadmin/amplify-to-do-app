@@ -19,7 +19,7 @@ const TaskList: React.FC<TaskListProps> = ({
 }) => {
   if (tasks.length === 0) {
     return (
-      <p className="text-gray-500 h-full text-center flex flex-col items-center justify-center">
+      <p className="text-gray-500 h-full text-center flex flex-col items-center justify-center grow">
         No tasks added yet.
         <br />
         Add a task to get started!
@@ -28,7 +28,7 @@ const TaskList: React.FC<TaskListProps> = ({
   }
 
   return (
-    <ul className="flex flex-col list-none w-full space-y-2 custom-scrollbar flex-1 min-h-0 overflow-y-auto">
+    <ul className="flex flex-col list-none w-full space-y-2 custom-scrollbar flex-1 min-h-0 overflow-y-auto max-h-[55dvh] md:max-h-[70dvh]">
       {tasks.map((task) => (
         <TaskItem
           key={task.TaskId}

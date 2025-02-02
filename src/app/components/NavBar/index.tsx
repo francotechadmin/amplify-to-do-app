@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { PenLine, Settings } from "lucide-react";
 import SettingsModal from "../SettingsModal";
 import { useSubscription } from "../../hooks/useSubscriptionStatus";
-import Loader from "../Loader";
 
 const NavBar: React.FC = () => {
   const [showSettings, setShowSettings] = useState(false);
