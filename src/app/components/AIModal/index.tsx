@@ -103,7 +103,7 @@ const AiFeatureModal: React.FC<AiFeatureModalProps> = ({
   return (
     <SubscriptionGuard onClose={onClose}>
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 text-lg"
         onClick={onClose}
       >
         <div
@@ -111,7 +111,7 @@ const AiFeatureModal: React.FC<AiFeatureModalProps> = ({
           onClick={(e) => e.stopPropagation()}
         >
           {/* Title */}
-          <h2 className="mb-4 text-xl font-semibold">
+          <h2 className="mb-4 text-lg font-semibold">
             Generate List using AI ✨
           </h2>
 
@@ -125,10 +125,10 @@ const AiFeatureModal: React.FC<AiFeatureModalProps> = ({
           >
             <input
               type="text"
-              placeholder='e.g. "Generate a list of 5 leg workouts"'
+              placeholder="Create a list of tasks for ..."
               value={userPrompt}
               onChange={(e) => setUserPrompt(e.target.value)}
-              className="flex-1 border border-gray-300 text-black rounded-full px-3 py-2 text-sm focus:outline-none hover:border-gray-500"
+              className="flex-1 border border-gray-300 text-black rounded-full px-3 py-2 text-[16px] focus:outline-none hover:border-gray-500"
               disabled={isGenerating}
             />
             <button
