@@ -164,6 +164,22 @@ export const batchCreateTodos = /* GraphQL */ `mutation BatchCreateTodos($input:
   APITypes.BatchCreateTodosMutationVariables,
   APITypes.BatchCreateTodosMutation
 >;
+export const batchReplaceTodos = /* GraphQL */ `mutation BatchReplaceTodos($input: BatchCreateInput!) {
+  batchReplaceTodos(input: $input) {
+    id
+    content
+    isCompleted
+    createdAt
+    updatedAt
+    userID
+    owner
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.BatchReplaceTodosMutationVariables,
+  APITypes.BatchReplaceTodosMutation
+>;
 export const clearTodos = /* GraphQL */ `mutation ClearTodos {
   clearTodos {
     id

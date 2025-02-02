@@ -22,11 +22,19 @@ export const getTodo = /* GraphQL */ `query GetTodo($id: ID!) {
 }
 ` as GeneratedQuery<APITypes.GetTodoQueryVariables, APITypes.GetTodoQuery>;
 export const listTodos = /* GraphQL */ `query ListTodos(
+  $id: ID
   $filter: ModelTodoFilterInput
   $limit: Int
   $nextToken: String
+  $sortDirection: ModelSortDirection
 ) {
-  listTodos(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listTodos(
+    id: $id
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    sortDirection: $sortDirection
+  ) {
     items {
       id
       content

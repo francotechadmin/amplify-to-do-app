@@ -23,7 +23,7 @@ async function batchCreateTodos(todos, userId, sub) {
   const putRequests = todos.map((todo) => ({
     PutRequest: {
       Item: {
-        id: AWS.util.uuid.v4(),
+        id: todo.id ? todo.id : AWS.util.uuid.v4(),
         content: todo.content,
         createdAt: new Date().toISOString(),
         isCompleted: todo.isCompleted,
@@ -48,6 +48,33 @@ async function batchCreateTodos(todos, userId, sub) {
   } catch (error) {
     console.error("[batchCreateTodos] Error:", error);
     throw new Error("Failed to batch create todos.");
+  }
+}
+
+// Function to batch replace all todos for a user
+// First delete all existing todos for the user, then create new ones
+async function batchReplaceTodos(todos, userId, sub) {
+  console.log(
+    `[batchReplaceTodos] Start - User: ${userId}, Todos:`,
+    JSON.stringify(todos)
+  );
+  if (!todos || todos.length === 0) {
+    console.warn("[batchReplaceTodos] No todos provided.");
+    throw new Error("No todos provided.");
+  }
+  try {
+    console.log("[batchReplaceTodos] Deleting existing todos.");
+    const existingTodos = await clearTodos(userId);
+    console.log(
+      `[batchReplaceTodos] Existing todos deleted: ${JSON.stringify(
+        existingTodos
+      )}`
+    );
+    console.log("[batchReplaceTodos] Creating new todos.");
+    return await batchCreateTodos(todos, userId, sub);
+  } catch (error) {
+    console.error("[batchReplaceTodos] Error:", error);
+    throw new Error("Failed to replace todos.");
   }
 }
 
@@ -109,6 +136,16 @@ const resolvers = {
         throw new Error("Unauthorized: Missing user identity.");
       }
       return await clearTodos(userId);
+    },
+    batchReplaceTodos: async (ctx) => {
+      console.log("[batchReplaceTodos] Resolver invoked.", JSON.stringify(ctx));
+      const userId = ctx.identity?.username;
+      const sub = ctx.identity?.claims?.sub;
+      if (!userId) {
+        console.warn("[batchReplaceTodos] Unauthorized request.");
+        throw new Error("Unauthorized: Missing user identity.");
+      }
+      return await batchReplaceTodos(ctx.arguments.input.todos, userId, sub);
     },
   },
 };

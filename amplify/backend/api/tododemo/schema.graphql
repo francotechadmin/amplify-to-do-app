@@ -2,7 +2,7 @@
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
 
 type Todo @model @auth(rules: [{ allow: owner }]) {
-  id: ID!
+  id: ID! @primaryKey
   content: String!
   isCompleted: Boolean!
   createdAt: AWSDateTime!
@@ -36,7 +36,9 @@ type Mutation {
   batchCreateTodos(input: BatchCreateInput!): [Todo]
     @function(name: "generalTodoResolver-${env}")
     @auth(rules: [{ allow: private }])
-  # no input or output required
+  batchReplaceTodos(input: BatchCreateInput!): [Todo]
+    @function(name: "generalTodoResolver-${env}")
+    @auth(rules: [{ allow: private }])
   clearTodos: [Todo]
     @function(name: "generalTodoResolver-${env}")
     @auth(rules: [{ allow: private }])
@@ -67,7 +69,19 @@ input BatchCreateInput {
 }
 
 input CreateTodoInput {
+  id: ID
   content: String!
   isCompleted: Boolean!
   userID: ID!
+}
+
+input BatchReplaceInput {
+  todos: [UpdateTodoInput!]!
+}
+
+input UpdateTodoInput {
+  id: ID!
+  content: String
+  isCompleted: Boolean
+  userID: ID
 }

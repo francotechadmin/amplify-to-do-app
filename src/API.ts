@@ -14,6 +14,7 @@ export type CheckoutSession = {
 };
 
 export type CreateTodoInput = {
+  id?: string | null,
   content: string,
   isCompleted: boolean,
   userID: string,
@@ -109,8 +110,6 @@ export type UpdateTodoInput = {
   id: string,
   content?: string | null,
   isCompleted?: boolean | null,
-  createdAt?: string | null,
-  updatedAt?: string | null,
   userID?: string | null,
 };
 
@@ -185,6 +184,12 @@ export type ModelTodoFilterInput = {
   owner?: ModelStringInput | null,
 };
 
+export enum ModelSortDirection {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
+
 export type ModelStringKeyConditionInput = {
   eq?: string | null,
   le?: string | null,
@@ -194,12 +199,6 @@ export type ModelStringKeyConditionInput = {
   between?: Array< string | null > | null,
   beginsWith?: string | null,
 };
-
-export enum ModelSortDirection {
-  ASC = "ASC",
-  DESC = "DESC",
-}
-
 
 export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
@@ -428,6 +427,23 @@ export type BatchCreateTodosMutation = {
   } | null > | null,
 };
 
+export type BatchReplaceTodosMutationVariables = {
+  input: BatchCreateInput,
+};
+
+export type BatchReplaceTodosMutation = {
+  batchReplaceTodos?:  Array< {
+    __typename: "Todo",
+    id: string,
+    content: string,
+    isCompleted: boolean,
+    createdAt: string,
+    updatedAt: string,
+    userID: string,
+    owner?: string | null,
+  } | null > | null,
+};
+
 export type ClearTodosMutationVariables = {
 };
 
@@ -462,9 +478,11 @@ export type GetTodoQuery = {
 };
 
 export type ListTodosQueryVariables = {
+  id?: string | null,
   filter?: ModelTodoFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
 };
 
 export type ListTodosQuery = {
