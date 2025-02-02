@@ -1,7 +1,7 @@
 // hooks/useFetchTasks.ts
 import { useQuery } from "@tanstack/react-query";
 import { generateClient } from "aws-amplify/api";
-import { listTodos } from "@/graphql/queries";
+import { listTodos, todosByUserIDAndCreatedAt } from "@/graphql/queries";
 
 const client = generateClient({ authMode: "userPool" });
 
@@ -15,6 +15,26 @@ const fetchTasksQuery = async () => {
     isCompleted: task.isCompleted,
     createdAt: new Date(task.createdAt),
   }));
+  return taskArray.sort(
+    (a: any, b: any) => b.createdAt.getTime() - a.createdAt.getTime()
+  );
+};
+
+const fetchTasksByUserIdQuery = async (userId: string) => {
+  const response = await client.graphql({
+    query: todosByUserIDAndCreatedAt,
+    variables: { userID: userId },
+  });
+
+  if (!response.data?.todosByUserIDAndCreatedAt?.items) return [];
+  const taskArray = response.data.todosByUserIDAndCreatedAt.items.map(
+    (task: any) => ({
+      TaskId: task.id,
+      TaskContent: task.content,
+      isCompleted: task.isCompleted,
+      createdAt: new Date(task.createdAt),
+    })
+  );
   return taskArray.sort(
     (a: any, b: any) => b.createdAt.getTime() - a.createdAt.getTime()
   );

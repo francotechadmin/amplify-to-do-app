@@ -6,42 +6,61 @@ import {
   deleteTodo,
   updateTodo,
   batchCreateTodos,
+  batchReplaceTodos,
   clearTodos,
 } from "@/graphql/mutations";
-import { listTodos } from "@/graphql/queries";
 import { useEffect, useRef, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const client = generateClient({ authMode: "userPool" });
 
-const batchCreateTodosQuery = async (tasks: { TaskContent: string }[]) => {
-  console.log("batchCreateTodosQuery", tasks);
+const batchCreateTodosQuery = async (
+  tasks: { TaskId: string; TaskContent: string }[]
+) => {
+  console.log("Batch Creating Todos:", tasks);
   const user = await getCurrentUser();
   const userId = user.username;
   const todoArray = tasks.map((task) => ({
+    id: task.TaskId, // Send client-assigned ID
     content: task.TaskContent,
     isCompleted: false,
     userID: userId,
   }));
-  console.log("todoArray", todoArray);
+
   const response = await client.graphql({
     query: batchCreateTodos,
-    variables: {
-      input: {
-        todos: todoArray,
-      },
-    },
+    variables: { input: { todos: todoArray } },
   });
+
   return response.data.batchCreateTodos;
 };
 
-const clearTasksQuery = async () => {
+const batchReplaceTodosQuery = async (
+  tasks: { TaskId: string; TaskContent: string }[]
+) => {
+  console.log("Batch Replacing Todos:", tasks);
   const user = await getCurrentUser();
   const userId = user.username;
+  const todoArray = tasks.map((task) => ({
+    id: task.TaskId,
+    content: task.TaskContent,
+    isCompleted: false,
+    userID: userId,
+  }));
+
   const response = await client.graphql({
+    query: batchReplaceTodos,
+    variables: { input: { todos: todoArray } },
+  });
+
+  return response.data.batchReplaceTodos;
+};
+
+const clearTasksQuery = async () => {
+  await client.graphql({
     query: clearTodos,
     variables: {},
   });
-  return response.data.clearTodos;
 };
 
 export function useMutateTasks() {
@@ -54,15 +73,8 @@ export function useMutateTasks() {
       createdAt: Date;
     }[]
   >([]);
-  const pendingBatchRef = useRef<
-    {
-      TaskId: string;
-      TaskContent: string;
-      isCompleted: boolean;
-      createdAt: Date;
-    }[]
-  >([]);
-  const BATCH_INTERVAL = 500; // Time in ms before sending batch request
+  const pendingBatchRef = useRef<typeof pendingTodos>([]);
+  const BATCH_INTERVAL = 500; // Batch processing interval
 
   // 🔥 **Batch Processing Effect**
   useEffect(() => {
@@ -81,50 +93,31 @@ export function useMutateTasks() {
 
     try {
       const response = await batchCreateTodosQuery(batch); // API Call
-      queryClient.setQueryData(["tasks"], (old: any) => {
-        if (!old) return response; // If no existing tasks, return new batch
-
-        // 🔥 Merge each server-created task with its optimistic version
-        return old.map((todo: any) => {
-          const matchingNewTodo = response.find(
-            (serverTodo: any) =>
-              serverTodo.content === todo.content && todo.isOptimistic
-          );
-          return matchingNewTodo
-            ? {
-                TaskID: matchingNewTodo.id,
-                TaskContent: todo.content,
-                isCompleted: todo.isCompleted,
-                createdAt: todo.createdAt,
-              }
-            : todo;
-        });
-      });
+      console.log("Batch created todos:", response);
+      console.log("Current todos:", queryClient.getQueryData(["tasks"]));
     } catch (error) {
       console.error("Batch task creation failed:", error);
-
-      // ❌ Remove failed optimistic tasks (rollback)
+      // ❌ Rollback failed optimistic tasks
       queryClient.setQueryData(["tasks"], (old: any) =>
-        old.filter((t: any) => !batch.some((bt) => bt.TaskId === t.id))
+        old.filter((t: any) => !batch.some((bt) => bt.TaskId === t.TaskId))
       );
-    } finally {
-      queryClient.invalidateQueries({ queryKey: ["tasks"] });
     }
   };
 
   // 🚀 **Optimistic Add Task**
   const addTask = (content: string) => {
     console.log("Adding task:", content);
-    const tempId = `temp-${Date.now()}-${Math.random()}`; // Temporary ID
+    const clientId = uuidv4(); // Generate a unique client ID
+
     const optimisticTodo = {
-      TaskId: tempId,
+      TaskId: clientId,
       TaskContent: content,
       isCompleted: false,
       createdAt: new Date(),
       isOptimistic: true,
     };
 
-    // Update UI immediately with optimistic todo
+    // Update UI immediately
     queryClient.setQueryData(["tasks"], (old: any) => [
       optimisticTodo,
       ...(old || []),
@@ -135,47 +128,78 @@ export function useMutateTasks() {
     setPendingTodos([...pendingBatchRef.current]);
   };
 
-  // 🚀 **Optimistic Bulk Replace Tasks with new list**
-  const bulkReplaceTasks = async (tasks: { id: string; content: string }[]) => {
+  // 🚀 **Optimistic Bulk Replace Tasks**
+  const bulkReplaceTasks = async (tasks: { content: string }[]) => {
     console.log("Replacing tasks with:", tasks);
-    const optimisticTodos = tasks.map((task) => ({
-      TaskId: `temp-${Date.now()}-${Math.random()}`,
+    const clientId = uuidv4(); // Generate a unique client ID
+    const optimisticTodos = tasks.map((task, index) => ({
+      TaskId: `${clientId}-${index}`, // Ensure unique ID for each task
       TaskContent: task.content,
       isCompleted: false,
       createdAt: new Date(),
       isOptimistic: true,
     }));
+    // Update UI immediately
+    queryClient.setQueryData(["tasks"], () => [...optimisticTodos]);
 
-    // Delete existing tasks
-    await clearTasksQuery();
-
-    // Update UI immediately with optimistic todos
-    queryClient.setQueryData(["tasks"], () => optimisticTodos);
-
-    // Add all tasks to pending batch
-    pendingBatchRef.current.push(...optimisticTodos);
-    setPendingTodos([...pendingBatchRef.current]);
-
-    // Trigger batch processing
-    processBatch();
+    try {
+      const response = await batchReplaceTodosQuery(optimisticTodos); // API Call
+      console.log("Batch created todos:", response);
+      console.log("Current todos:", queryClient.getQueryData(["tasks"]));
+    } catch (error) {
+      console.error("Batch task creation failed:", error);
+      // ❌ Rollback failed optimistic tasks
+      queryClient.setQueryData(["tasks"], (old: any) =>
+        old.filter(
+          (t: any) => !optimisticTodos.some((ot) => ot.TaskId === t.TaskId)
+        )
+      );
+    }
   };
+
+  // 🔥 **Mutations for Adding Tasks**
+  const { mutate: createTask } = useMutation({
+    mutationFn: async (content: string) => {
+      const user = await getCurrentUser();
+      const userId = user.username;
+
+      return await client.graphql({
+        query: createTodo,
+        variables: { input: { content, isCompleted: false, userID: userId } },
+      });
+    },
+    onMutate: async (content) => {
+      await queryClient.cancelQueries({ queryKey: ["tasks"] });
+      const previousTasks = queryClient.getQueryData(["tasks"]);
+      const optimisticTodo = {
+        TaskId: uuidv4(),
+        TaskContent: content,
+        isCompleted: false,
+        createdAt: new Date(),
+      };
+      queryClient.setQueryData(["tasks"], (old: any) => [
+        optimisticTodo,
+        ...(old || []),
+      ]);
+      return { previousTasks };
+    },
+    onError: (_, __, context) => {
+      queryClient.setQueryData(["tasks"], context?.previousTasks);
+    },
+  });
 
   // 🔥 **Mutations for Updating, Deleting, Toggling**
   const { mutate: editTask } = useMutation({
     mutationFn: async ({
       taskId,
       newContent,
-      isCompleted,
     }: {
       taskId: string;
       newContent: string;
-      isCompleted: boolean;
     }) => {
       return await client.graphql({
         query: updateTodo,
-        variables: {
-          input: { id: taskId, content: newContent, isCompleted: isCompleted },
-        },
+        variables: { input: { id: taskId, content: newContent } },
       });
     },
     onMutate: async ({ taskId, newContent }) => {
@@ -183,7 +207,7 @@ export function useMutateTasks() {
       const previousTasks = queryClient.getQueryData(["tasks"]);
       queryClient.setQueryData(["tasks"], (old: any) =>
         old.map((t: any) =>
-          t.id === taskId ? { ...t, content: newContent } : t
+          t.TaskId === taskId ? { ...t, TaskContent: newContent } : t
         )
       );
       return { previousTasks };
@@ -191,7 +215,6 @@ export function useMutateTasks() {
     onError: (_, __, context) => {
       queryClient.setQueryData(["tasks"], context?.previousTasks);
     },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
   });
 
   const { mutate: removeTask } = useMutation({
@@ -205,14 +228,13 @@ export function useMutateTasks() {
       await queryClient.cancelQueries({ queryKey: ["tasks"] });
       const previousTasks = queryClient.getQueryData(["tasks"]);
       queryClient.setQueryData(["tasks"], (old: any) =>
-        old.filter((t: any) => t.id !== taskId)
+        old.filter((t: any) => t.TaskId !== taskId)
       );
       return { previousTasks };
     },
     onError: (_, __, context) => {
       queryClient.setQueryData(["tasks"], context?.previousTasks);
     },
-    onSettled: () => queryClient.invalidateQueries({ queryKey: ["tasks"] }),
   });
 
   const { mutate: clearTasks } = useMutation({
@@ -230,6 +252,7 @@ export function useMutateTasks() {
   return {
     addTask,
     bulkReplaceTasks,
+    createTask,
     editTask,
     removeTask,
     pendingTodos, // Can be used in UI to show "sending..." state
