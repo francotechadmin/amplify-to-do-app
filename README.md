@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/francotechadmin/to-do-demo">
-    <img src="public/vercel.svg" alt="Logo" width="80" height="80">
+    <img src="public/pencil.png" alt="Logo" width="150" >
   </a>
 
 <h3 align="center">To-do List</h3>
@@ -14,6 +14,8 @@
     <a href="https://github.com/francotechadmin/to-do-demo"><strong>Explore the docs »</strong></a>
     <br />
     <br />
+    <a href="https://francotechadmin.github.io/to-do-demo/">View Site</a>
+    ·
     <a href="https://github.com/francotechadmin/to-do-demo/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
     <a href="https://github.com/francotechadmin/to-do-demo/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
@@ -48,8 +50,8 @@
 
 ## About The Project
 
-<a href="https://main.ds5im9z8tc6j1.amplifyapp.com/" target="\_blank">
-    <img src="public/sc.png" alt="drawing" width="300"/>
+<a href="https://francotechadmin.github.io/to-do-demo/" target="\_blank">
+    <img src="docs/sc.png" alt="drawing" width="300"/>
 </a>
 
 To-Do List is a sleek, user-friendly app designed to help you stay organized, track your tasks, and boost your productivity. Its modern UI ensures a seamless experience across devices. Whether you’re managing daily errands or complex projects, To-Do List has got you covered.
