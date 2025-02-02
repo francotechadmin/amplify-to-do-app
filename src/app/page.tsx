@@ -84,7 +84,7 @@ function Home() {
 
         {/* TASK LIST OR LOADER */}
         {isLoading ? (
-          <div className="text-gray-600 h-full flex items-center justify-center">
+          <div className="text-gray-600 h-full flex items-center justify-center grow">
             <Loader color="white" />
           </div>
         ) : (
