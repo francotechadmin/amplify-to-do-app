@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import TaskItem, { Task } from "../TaskItem";
 import { PlusCircle, Sparkles } from "lucide-react";
 import AiFeatureModal from "../AIModal";
+import Loader from "../Loader";
 interface TaskListProps {
   tasks: Task[];
   isLoading: boolean;
@@ -70,7 +71,11 @@ const TaskList: React.FC<TaskListProps> = ({
         onClose={() => setShowAiModal(false)}
         onSave={onSaveAiTasks}
       />
-      {isLoading && <div className="text-gray-600">Loading tasks...</div>}
+      {isLoading && (
+        <div className="text-gray-600 h-full flex items-center justify-center">
+          <Loader color="white" />
+        </div>
+      )}
       {/* TASKS LIST */}
       <ul className="flex flex-col list-none w-full space-y-2 custom-scrollbar flex-1 min-h-0 overflow-y-auto">
         {tasks.length === 0 && !isLoading ? (
