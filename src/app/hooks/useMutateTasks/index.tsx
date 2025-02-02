@@ -185,21 +185,27 @@ export function useMutateTasks() {
     mutationFn: async ({
       taskId,
       newContent,
+      isCompleted,
     }: {
       taskId: string;
       newContent: string;
+      isCompleted: boolean;
     }) => {
       return await client.graphql({
         query: updateTodo,
-        variables: { input: { id: taskId, content: newContent } },
+        variables: {
+          input: { id: taskId, content: newContent, isCompleted: isCompleted },
+        },
       });
     },
-    onMutate: async ({ taskId, newContent }) => {
+    onMutate: async ({ taskId, newContent, isCompleted }) => {
       await queryClient.cancelQueries({ queryKey: ["tasks"] });
       const previousTasks = queryClient.getQueryData(["tasks"]);
       queryClient.setQueryData(["tasks"], (old: any) =>
         old.map((t: any) =>
-          t.TaskId === taskId ? { ...t, TaskContent: newContent } : t
+          t.TaskId === taskId
+            ? { ...t, TaskContent: newContent, isCompleted: isCompleted }
+            : t
         )
       );
       return { previousTasks };

@@ -34,7 +34,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onEditTask, onDelete }) => {
               isCompleted: !task.isCompleted,
             })
           }
-          className={`w-5 h-5 rounded-full border-2 flex items-center justify-center 
+          className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0
           }`}
         >
           {/* Checkmark only if completed */}
