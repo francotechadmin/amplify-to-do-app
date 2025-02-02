@@ -48,7 +48,6 @@ const AiFeatureModal: React.FC<AiFeatureModalProps> = ({
   } = useMutation({
     mutationFn: generateAiTasks,
     onSuccess: (generatedTasks) => {
-      console.log("AI tasks generated successfully!", generatedTasks);
       if (!generatedTasks) return;
 
       // Convert strings into our local AITask shape

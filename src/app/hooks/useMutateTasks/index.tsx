@@ -17,7 +17,6 @@ const client = generateClient({ authMode: "userPool" });
 const batchCreateTodosQuery = async (
   tasks: { TaskId: string; TaskContent: string }[]
 ) => {
-  console.log("Batch Creating Todos:", tasks);
   const user = await getCurrentUser();
   const userId = user.username;
   const todoArray = tasks.map((task) => ({
@@ -38,7 +37,6 @@ const batchCreateTodosQuery = async (
 const batchReplaceTodosQuery = async (
   tasks: { TaskId: string; TaskContent: string }[]
 ) => {
-  console.log("Batch Replacing Todos:", tasks);
   const user = await getCurrentUser();
   const userId = user.username;
   const todoArray = tasks.map((task) => ({
@@ -93,8 +91,6 @@ export function useMutateTasks() {
 
     try {
       const response = await batchCreateTodosQuery(batch); // API Call
-      console.log("Batch created todos:", response);
-      console.log("Current todos:", queryClient.getQueryData(["tasks"]));
     } catch (error) {
       console.error("Batch task creation failed:", error);
       // ❌ Rollback failed optimistic tasks
@@ -106,7 +102,6 @@ export function useMutateTasks() {
 
   // 🚀 **Optimistic Add Task**
   const addTask = (content: string) => {
-    console.log("Adding task:", content);
     const clientId = uuidv4(); // Generate a unique client ID
 
     const optimisticTodo = {
@@ -130,7 +125,6 @@ export function useMutateTasks() {
 
   // 🚀 **Optimistic Bulk Replace Tasks**
   const bulkReplaceTasks = async (tasks: { content: string }[]) => {
-    console.log("Replacing tasks with:", tasks);
     const clientId = uuidv4(); // Generate a unique client ID
     const optimisticTodos = tasks.map((task, index) => ({
       TaskId: `${clientId}-${index}`, // Ensure unique ID for each task
@@ -143,9 +137,7 @@ export function useMutateTasks() {
     queryClient.setQueryData(["tasks"], () => [...optimisticTodos]);
 
     try {
-      const response = await batchReplaceTodosQuery(optimisticTodos); // API Call
-      console.log("Batch created todos:", response);
-      console.log("Current todos:", queryClient.getQueryData(["tasks"]));
+      await batchReplaceTodosQuery(optimisticTodos); // API Call
     } catch (error) {
       console.error("Batch task creation failed:", error);
       // ❌ Rollback failed optimistic tasks
