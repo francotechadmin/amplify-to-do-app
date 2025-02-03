@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://francotechadmin.github.io/to-do-demo/">
-    <img src="public/pencil.ico" alt="Logo" width="75" >
+    <img src="public/logo.png" alt="Logo" width="75" >
   </a>
   <h3 align="center">To-do List</h3>
   <p align="center">
