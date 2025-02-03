@@ -50,8 +50,8 @@
 
 ## About The Project
 
-<a href="https://francotechadmin.github.io/to-do-demo/" target="\_blank">
-    <img src="docs/sc.png" alt="drawing" width="300"/>
+<a href="https://francotechadmin.github.io/to-do-demo/" target="\_blank" style="width: 100%; display: inline-block; text-align: center;">
+    <img src="docs/demo.gif" alt="drawing" width="300"/>
 </a>
 
 To-Do List is a sleek, user-friendly app designed to help you stay organized, track your tasks, and boost your productivity. Its modern UI ensures a seamless experience across devices. Whether you’re managing daily errands or complex projects, To-Do List has got you covered.
