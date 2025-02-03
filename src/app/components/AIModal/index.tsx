@@ -128,12 +128,12 @@ const AiFeatureModal: React.FC<AiFeatureModalProps> = ({
               placeholder="Create a list of tasks for ..."
               value={userPrompt}
               onChange={(e) => setUserPrompt(e.target.value)}
-              className="flex-1 border border-gray-300 text-black rounded-full px-3 py-2 text-[16px] focus:outline-none hover:border-gray-500"
+              className="flex-1 border border-gray-300 text-black rounded-full h-10 px-3 text-[16px] focus:outline-none hover:border-gray-500"
               disabled={isGenerating}
             />
             <button
               type="submit"
-              className="bg-red-600 text-white py-2 px-4 rounded-full text-sm ml-2 hover:bg-red-700 disabled:opacity-60"
+              className="bg-red-600 text-white h-10 px-4 rounded-full text-sm ml-2 hover:bg-red-700 disabled:opacity-60"
               disabled={isGenerating || !userPrompt.trim()}
             >
               {isGenerating ? (
