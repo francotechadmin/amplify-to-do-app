@@ -175,7 +175,7 @@ exports.handler = async (event, context, callback) => {
         {
           role: "system",
           content:
-            "You are a helpful assistant that generates tasks. Please return tasks as a single line, comma-separated list, with no extra text or numbering.",
+            "You are a helpful assistant that generates tasks. Please return tasks as a valid JSON array of strings with no extra text.",
         },
         {
           role: "user",
@@ -185,13 +185,23 @@ exports.handler = async (event, context, callback) => {
     });
 
     // 4) Parse AI response
+    // Get the raw output from OpenAI
     const rawText = await completion.then(
       (result) => result.choices[0].message.content
     );
     console.log("Raw AI output:", rawText);
 
-    // 5)Split on commas, then trim each piece
-    const todos = rawText.split(",").map((item) => item.trim());
+    // Parse the JSON array
+    let todos;
+    try {
+      todos = JSON.parse(rawText);
+      if (!Array.isArray(todos)) {
+        throw new Error("The response is not an array.");
+      }
+    } catch (e) {
+      console.error("Failed to parse AI response as JSON:", e);
+      throw e; // or handle the error as needed
+    }
 
     // 6) Update user's free queries used count if necessary
     if (shouldIncrementFreeQueries) {
