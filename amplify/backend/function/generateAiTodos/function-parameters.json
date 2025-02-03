@@ -6,7 +6,8 @@
   "permissions": {
     "api": {
       "tododemo": [
-        "Query"
+        "Query",
+        "Mutation"
       ]
     }
   }

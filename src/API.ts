@@ -26,10 +26,10 @@ export type ModelTodoConditionInput = {
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
   userID?: ModelIDInput | null,
+  owner?: ModelStringInput | null,
   and?: Array< ModelTodoConditionInput | null > | null,
   or?: Array< ModelTodoConditionInput | null > | null,
   not?: ModelTodoConditionInput | null,
-  owner?: ModelStringInput | null,
 };
 
 export type ModelStringInput = {
@@ -120,10 +120,12 @@ export type DeleteTodoInput = {
 export type CreateUserInput = {
   id?: string | null,
   subscriptionStatus: string,
+  freeQueriesUsed: number,
 };
 
 export type ModelUserConditionInput = {
   subscriptionStatus?: ModelStringInput | null,
+  freeQueriesUsed?: ModelIntInput | null,
   and?: Array< ModelUserConditionInput | null > | null,
   or?: Array< ModelUserConditionInput | null > | null,
   not?: ModelUserConditionInput | null,
@@ -132,25 +134,32 @@ export type ModelUserConditionInput = {
   owner?: ModelStringInput | null,
 };
 
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
 export type User = {
   __typename: "User",
   id: string,
   subscriptionStatus: string,
-  todos?: ModelTodoConnection | null,
+  freeQueriesUsed: number,
   createdAt: string,
   updatedAt: string,
   owner?: string | null,
 };
 
-export type ModelTodoConnection = {
-  __typename: "ModelTodoConnection",
-  items:  Array<Todo | null >,
-  nextToken?: string | null,
-};
-
 export type UpdateUserInput = {
   id: string,
   subscriptionStatus?: string | null,
+  freeQueriesUsed?: number | null,
 };
 
 export type DeleteUserInput = {
@@ -178,10 +187,10 @@ export type ModelTodoFilterInput = {
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
   userID?: ModelIDInput | null,
+  owner?: ModelStringInput | null,
   and?: Array< ModelTodoFilterInput | null > | null,
   or?: Array< ModelTodoFilterInput | null > | null,
   not?: ModelTodoFilterInput | null,
-  owner?: ModelStringInput | null,
 };
 
 export enum ModelSortDirection {
@@ -189,6 +198,12 @@ export enum ModelSortDirection {
   DESC = "DESC",
 }
 
+
+export type ModelTodoConnection = {
+  __typename: "ModelTodoConnection",
+  items:  Array<Todo | null >,
+  nextToken?: string | null,
+};
 
 export type ModelStringKeyConditionInput = {
   eq?: string | null,
@@ -203,6 +218,7 @@ export type ModelStringKeyConditionInput = {
 export type ModelUserFilterInput = {
   id?: ModelIDInput | null,
   subscriptionStatus?: ModelStringInput | null,
+  freeQueriesUsed?: ModelIntInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
   and?: Array< ModelUserFilterInput | null > | null,
@@ -267,11 +283,24 @@ export type ModelSubscriptionBooleanInput = {
 export type ModelSubscriptionUserFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   subscriptionStatus?: ModelSubscriptionStringInput | null,
+  freeQueriesUsed?: ModelSubscriptionIntInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionUserFilterInput | null > | null,
   or?: Array< ModelSubscriptionUserFilterInput | null > | null,
   owner?: ModelStringInput | null,
+};
+
+export type ModelSubscriptionIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  in?: Array< number | null > | null,
+  notIn?: Array< number | null > | null,
 };
 
 export type CreateCheckoutSessionMutationVariables = {
@@ -349,10 +378,7 @@ export type CreateUserMutation = {
     __typename: "User",
     id: string,
     subscriptionStatus: string,
-    todos?:  {
-      __typename: "ModelTodoConnection",
-      nextToken?: string | null,
-    } | null,
+    freeQueriesUsed: number,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -369,10 +395,7 @@ export type UpdateUserMutation = {
     __typename: "User",
     id: string,
     subscriptionStatus: string,
-    todos?:  {
-      __typename: "ModelTodoConnection",
-      nextToken?: string | null,
-    } | null,
+    freeQueriesUsed: number,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -389,10 +412,7 @@ export type DeleteUserMutation = {
     __typename: "User",
     id: string,
     subscriptionStatus: string,
-    todos?:  {
-      __typename: "ModelTodoConnection",
-      nextToken?: string | null,
-    } | null,
+    freeQueriesUsed: number,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -537,10 +557,7 @@ export type GetUserQuery = {
     __typename: "User",
     id: string,
     subscriptionStatus: string,
-    todos?:  {
-      __typename: "ModelTodoConnection",
-      nextToken?: string | null,
-    } | null,
+    freeQueriesUsed: number,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -560,6 +577,7 @@ export type ListUsersQuery = {
       __typename: "User",
       id: string,
       subscriptionStatus: string,
+      freeQueriesUsed: number,
       createdAt: string,
       updatedAt: string,
       owner?: string | null,
@@ -632,10 +650,7 @@ export type OnCreateUserSubscription = {
     __typename: "User",
     id: string,
     subscriptionStatus: string,
-    todos?:  {
-      __typename: "ModelTodoConnection",
-      nextToken?: string | null,
-    } | null,
+    freeQueriesUsed: number,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -652,10 +667,7 @@ export type OnUpdateUserSubscription = {
     __typename: "User",
     id: string,
     subscriptionStatus: string,
-    todos?:  {
-      __typename: "ModelTodoConnection",
-      nextToken?: string | null,
-    } | null,
+    freeQueriesUsed: number,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,
@@ -672,10 +684,7 @@ export type OnDeleteUserSubscription = {
     __typename: "User",
     id: string,
     subscriptionStatus: string,
-    todos?:  {
-      __typename: "ModelTodoConnection",
-      nextToken?: string | null,
-    } | null,
+    freeQueriesUsed: number,
     createdAt: string,
     updatedAt: string,
     owner?: string | null,

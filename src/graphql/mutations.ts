@@ -82,10 +82,7 @@ export const createUser = /* GraphQL */ `mutation CreateUser(
   createUser(input: $input, condition: $condition) {
     id
     subscriptionStatus
-    todos {
-      nextToken
-      __typename
-    }
+    freeQueriesUsed
     createdAt
     updatedAt
     owner
@@ -103,10 +100,7 @@ export const updateUser = /* GraphQL */ `mutation UpdateUser(
   updateUser(input: $input, condition: $condition) {
     id
     subscriptionStatus
-    todos {
-      nextToken
-      __typename
-    }
+    freeQueriesUsed
     createdAt
     updatedAt
     owner
@@ -124,10 +118,7 @@ export const deleteUser = /* GraphQL */ `mutation DeleteUser(
   deleteUser(input: $input, condition: $condition) {
     id
     subscriptionStatus
-    todos {
-      nextToken
-      __typename
-    }
+    freeQueriesUsed
     createdAt
     updatedAt
     owner

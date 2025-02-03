@@ -1,13 +1,16 @@
 # This "input" configures a global authorization rule to enable public access to
 # all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
 
-type Todo @model @auth(rules: [{ allow: owner }]) {
-  id: ID! @primaryKey
-  content: String!
-  isCompleted: Boolean!
-  createdAt: AWSDateTime!
-  updatedAt: AWSDateTime!
-  userID: ID! @index(name: "byUser", sortKeyFields: ["createdAt"])
+type Todo @model {
+  id: ID! @primaryKey @auth(rules: [{ allow: owner }])
+  content: String! @auth(rules: [{ allow: owner }])
+  isCompleted: Boolean! @auth(rules: [{ allow: owner }])
+  createdAt: AWSDateTime! @auth(rules: [{ allow: owner }])
+  updatedAt: AWSDateTime! @auth(rules: [{ allow: owner }])
+  userID: ID!
+    @index(name: "byUser", sortKeyFields: ["createdAt"])
+    @auth(rules: [{ allow: owner }])
+  owner: String @auth(rules: [{ allow: owner, operations: [read, delete] }])
 }
 
 type User
@@ -19,9 +22,10 @@ type User
     ]
   ) {
   id: ID!
-  subscriptionStatus: String! # active, inactive, or null
-  todos: [Todo] @hasMany(fields: ["id"]) # A user can have many todos
+  subscriptionStatus: String! # active, inactive, or
+  freeQueriesUsed: Int!
 }
+
 input UpdateUserSubscriptionInput {
   id: ID!
   subscriptionStatus: String!

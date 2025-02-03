@@ -34,6 +34,16 @@ const readUser = /* GraphQL */ `
     getUser(id: $id) {
       id
       subscriptionStatus
+      freeQueriesUsed
+    }
+  }
+`;
+
+const updateUser = /* GraphQL */ `
+  mutation UpdateUser($input: UpdateUserInput!) {
+    updateUser(input: $input) {
+      id
+      freeQueriesUsed
     }
   }
 `;
@@ -118,6 +128,7 @@ exports.handler = async (event, context, callback) => {
 
     const response = await executeGraphQL(readUser, { id: userId });
     const user = response.data.getUser;
+    let shouldIncrementFreeQueries;
     console.log("User:", user);
 
     if (!user) {
@@ -126,7 +137,14 @@ exports.handler = async (event, context, callback) => {
       !user.subscriptionStatus ||
       user.subscriptionStatus !== "active"
     ) {
-      return { error: "User subscription not active" };
+      console.log("User subscription is not active");
+
+      if (user.freeQueriesUsed >= 10) {
+        console.log("User has used all free queries");
+        return { error: "User has used all free queries" };
+      }
+      console.log("Incrementing user's free queries used count");
+      shouldIncrementFreeQueries = true;
     } else {
       console.log("User subscription is active");
     }
@@ -174,6 +192,13 @@ exports.handler = async (event, context, callback) => {
 
     // 5)Split on commas, then trim each piece
     const todos = rawText.split(",").map((item) => item.trim());
+
+    // 6) Update user's free queries used count if necessary
+    if (shouldIncrementFreeQueries) {
+      await executeGraphQL(updateUser, {
+        input: { id: userId, freeQueriesUsed: user.freeQueriesUsed + 1 },
+      });
+    }
 
     // 7) Return structured tasks to the caller
     return {

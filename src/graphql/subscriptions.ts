@@ -72,10 +72,7 @@ export const onCreateUser = /* GraphQL */ `subscription OnCreateUser(
   onCreateUser(filter: $filter, owner: $owner) {
     id
     subscriptionStatus
-    todos {
-      nextToken
-      __typename
-    }
+    freeQueriesUsed
     createdAt
     updatedAt
     owner
@@ -93,10 +90,7 @@ export const onUpdateUser = /* GraphQL */ `subscription OnUpdateUser(
   onUpdateUser(filter: $filter, owner: $owner) {
     id
     subscriptionStatus
-    todos {
-      nextToken
-      __typename
-    }
+    freeQueriesUsed
     createdAt
     updatedAt
     owner
@@ -114,10 +108,7 @@ export const onDeleteUser = /* GraphQL */ `subscription OnDeleteUser(
   onDeleteUser(filter: $filter, owner: $owner) {
     id
     subscriptionStatus
-    todos {
-      nextToken
-      __typename
-    }
+    freeQueriesUsed
     createdAt
     updatedAt
     owner

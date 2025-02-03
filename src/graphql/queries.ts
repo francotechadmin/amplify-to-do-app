@@ -88,10 +88,7 @@ export const getUser = /* GraphQL */ `query GetUser($id: ID!) {
   getUser(id: $id) {
     id
     subscriptionStatus
-    todos {
-      nextToken
-      __typename
-    }
+    freeQueriesUsed
     createdAt
     updatedAt
     owner
@@ -108,6 +105,7 @@ export const listUsers = /* GraphQL */ `query ListUsers(
     items {
       id
       subscriptionStatus
+      freeQueriesUsed
       createdAt
       updatedAt
       owner
