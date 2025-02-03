@@ -3,16 +3,15 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/francotechadmin/to-do-demo">
-    <img src="public/pencil.png" alt="Logo" width="150" >
+  <a href="https://francotechadmin.github.io/to-do-demo/">
+    <img src="public/pencil.ico" alt="Logo" width="75" >
   </a>
-
-<h3 align="center">To-do List</h3>
+  <h3 align="center">To-do List</h3>
   <p align="center">
     An awesome project to manage your activities!
-    <br />
-    <a href="https://github.com/francotechadmin/to-do-demo"><strong>Explore the docs »</strong></a>
-    <br />
+    <!-- <br /> -->
+    <!-- <a href="https://github.com/francotechadmin/to-do-demo"><strong>Explore the docs »</strong></a> -->
+    <!-- <br /> -->
     <br />
     <a href="https://francotechadmin.github.io/to-do-demo/">View Site</a>
     ·
@@ -178,7 +177,6 @@ Project Link: https://github.com/francotechadmin/to-do-demo
 
 <!-- MARKDOWN LINKS & IMAGES -->
 
-[screenshot]: public/sc.png
 [Next.js]: https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white
 [Next-url]: https://nextjs.org/
 [React]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
