@@ -13,6 +13,7 @@ import AddTaskForm from "./components/AddTaskForm";
 import GenerateTasksButton from "./components/GenerateTasksButton";
 import TaskList from "./components/TaskList";
 import Loader from "./components/Loader";
+import InstallPrompt from "./components/InstallPrompt";
 
 import { useSubscription } from "./hooks/useSubscriptionStatus";
 import { useFetchTasks } from "./hooks/useFetchTasks";
@@ -51,6 +52,9 @@ function Home() {
 
   return (
     <div className="flex flex-col justify-center flex-1 min-h-0 p-4 w-full max-w-4xl">
+      {/* INSTALL PROMPT */}
+      <InstallPrompt />
+
       {/* NAV BAR at the top */}
       <NavBar />
 
