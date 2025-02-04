@@ -46,7 +46,7 @@
 
 ## About The Project
 
-<a href="https://francotechadmin.github.io/to-do-demo/" target="\_blank" style="width: 100%; display: inline-block; text-align: center;">
+<a href="https://myaitodolist.top" target="\_blank" style="width: 100%; display: inline-block; text-align: center;">
     <img src="docs/demo.gif" alt="drawing" width="300"/>
 </a>
 
