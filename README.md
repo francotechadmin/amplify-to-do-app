@@ -3,17 +3,14 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://francotechadmin.github.io/to-do-demo/">
+  <a href="https://myaitodolist.top/">
     <img src="public/logo.png" alt="Logo" width="75" >
   </a>
   <h3 align="center">To-do List</h3>
   <p align="center">
     An awesome project to manage your activities!
-    <!-- <br /> -->
-    <!-- <a href="https://github.com/francotechadmin/to-do-demo"><strong>Explore the docs »</strong></a> -->
-    <!-- <br /> -->
     <br />
-    <a href="https://francotechadmin.github.io/to-do-demo/">View Site</a>
+    <a href="https://myaitodolist.top/">View Site</a>
     ·
     <a href="https://github.com/francotechadmin/to-do-demo/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
